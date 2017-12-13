@@ -44,6 +44,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	}
 
 
+	/**
+	 *
+	 */
 	function executeCommand() {
 		$next_class = $this->ctrl->getNextClass($this);
 
@@ -88,6 +91,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	protected function getEditorForm() {
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
+
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
 
 		$form = ilH5PEditor::getInstance()->getEditorForm($h5p_content);
 
@@ -137,7 +142,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		$this->createElement($properties);
 
-		$h5p_content->setObjId(0); // TODO
+		$h5p_content->setObjId(0); // TODO Set id of page component
 
 		$h5p_content->update();
 
@@ -188,10 +193,25 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	}
 
 
+	/**
+	 * @param string $a_mode
+	 * @param array  $a_properties
+	 * @param string $plugin_version
+	 *
+	 * @return string
+	 */
 	function getElementHTML($a_mode, array $a_properties, $plugin_version) {
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
-		return ilH5PShowContent::getInstance()->getH5PCoreIntegration($h5p_content->getContentId());
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
+
+		// TODO Fix multiple H5P on 1 page
+
+		if ($h5p_content !== NULL) {
+			return ilH5PShowContent::getInstance()->getH5PContentIntegration($h5p_content);
+		} else {
+			return $this->plugin->txt("pchfp_content_not_exists");
+		}
 	}
 
 
