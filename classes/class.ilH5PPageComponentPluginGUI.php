@@ -94,7 +94,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
 
-		$form = ilH5PEditor::getInstance()->getEditorForm($h5p_content);
+		$form = $this->h5p->show_editor()->getEditorForm($h5p_content);
 
 		$form->setFormAction($this->ctrl->getFormAction($this));
 
@@ -132,7 +132,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 			return;
 		}
 
-		$h5p_content = ilH5PEditor::getInstance()->createContent($form);
+		$h5p_content = $this->h5p->show_editor()->createContent($form);
 
 		$h5p_content->setParentType("page");
 
@@ -177,11 +177,29 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
 
-		ilH5PEditor::getInstance()->updateContent($h5p_content, $form);
+		$this->h5p->show_editor()->updateContent($h5p_content, $form);
 
 		$this->updateElement($properties);
 
 		$this->returnToParent();
+	}
+
+
+	/**
+	 *
+	 */
+	function delete() {
+		// TODO Delete content
+
+		// TODO What do to when content not exists but exists in page compontent?
+
+		$properties = $this->getProperties();
+
+		$_GET[ilH5PActionGUI::CMD_H5P_ACTION] = ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE;
+		$_GET[ilH5PActionGUI::RETURN_CMD] = self::CMD_CANCEL;
+		$_GET["xhfp_content"] = $properties["content_id"];
+
+		ilH5PActionGUI::forward($this);
 	}
 
 
@@ -201,14 +219,14 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	function getElementHTML($a_mode, array $a_properties, $plugin_version) {
+		// TODO How display result?
+
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
 
-		// TODO Fix multiple H5P on 1 page
-
 		if ($h5p_content !== NULL) {
-			return ilH5PShowContent::getInstance()->getH5PContentIntegration($h5p_content);
+			return $this->h5p->show_content()->getH5PContentIntegration($h5p_content);
 		} else {
 			return $this->plugin->txt("pchfp_content_not_exists");
 		}
