@@ -7,6 +7,19 @@ require_once "Services/Component/classes/class.ilPluginConfigGUI.php";
 class ilH5PPageComponentConfigGUI extends ilPluginConfigGUI {
 
 	/**
+	 * @var ilCtrl
+	 */
+	protected $ctrl;
+
+
+	function __construct() {
+		global $DIC;
+
+		$this->ctrl = $DIC->ctrl();
+	}
+
+
+	/**
 	 * @param string $cmd
 	 */
 	function performCommand($cmd) {

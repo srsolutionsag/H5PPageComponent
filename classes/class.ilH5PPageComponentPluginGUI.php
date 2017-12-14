@@ -194,12 +194,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		// TODO What do to when content not exists but exists in page compontent?
 
 		$properties = $this->getProperties();
+		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
 
-		$_GET[ilH5PActionGUI::CMD_H5P_ACTION] = ilH5PActionGUI::H5P_ACTION_CONTENT_DELETE;
-		$_GET[ilH5PActionGUI::RETURN_CMD] = self::CMD_CANCEL;
-		$_GET["xhfp_content"] = $properties["content_id"];
-
-		ilH5PActionGUI::forward($this);
+		if ($h5p_content !== NULL) {
+			$this->h5p->show_editor()->deleteContent($h5p_content);
+		}
 	}
 
 
