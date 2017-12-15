@@ -133,16 +133,14 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$h5p_content = $this->h5p->show_editor()->createContent($form);
 
 		$h5p_content->setParentType("page");
+		$h5p_content->setObjId(0); // No id required linked to h5p page component. Parent type is enough
+
+		$h5p_content->update();
 
 		$properties = [
 			"content_id" => $h5p_content->getContentId()
 		];
-
 		$this->createElement($properties);
-
-		$h5p_content->setObjId(0); // TODO Set id of page component
-
-		$h5p_content->update();
 
 		$this->returnToParent();
 	}
@@ -189,8 +187,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	function delete() {
 		// TODO Delete content on page component delete
 
-		// TODO What do to when content not exists but exists in page component (Plugin uninstall)?
-
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
 
@@ -216,8 +212,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	function getElementHTML($a_mode, array $a_properties, $plugin_version) {
-		// TODO How to display results?
-
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
