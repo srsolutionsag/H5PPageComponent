@@ -7,13 +7,13 @@ require_once "Services/COPage/classes/class.ilPageComponentPlugin.php";
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 	/**
-	 * @var H5PPageComponentPlugin
+	 * @var ilH5PPageComponentPlugin
 	 */
 	protected static $instance = NULL;
 
 
 	/**
-	 * @return H5PPageComponentPlugin
+	 * @return ilH5PPageComponentPlugin
 	 */
 	static function getInstance() {
 		if (self::$instance === NULL) {
