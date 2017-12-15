@@ -92,7 +92,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		$form = $this->h5p->show_editor()->getEditorForm($h5p_content);
 
@@ -112,9 +112,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	function insert() {
-		$form = $this->getEditorForm();
-
-		$this->show($form->getHTML());
+		$this->edit();
 	}
 
 
@@ -189,9 +187,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	function delete() {
-		// TODO Delete content
+		// TODO Delete content on page component delete
 
-		// TODO What do to when content not exists but exists in page compontent?
+		// TODO What do to when content not exists but exists in page component (Plugin uninstall)?
 
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
@@ -218,11 +216,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	function getElementHTML($a_mode, array $a_properties, $plugin_version) {
-		// TODO How display result?
+		// TODO How to display results?
 
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id"));
+		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		if ($h5p_content !== NULL) {
 			return $this->h5p->show_content()->getH5PContentIntegration($h5p_content);
