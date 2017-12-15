@@ -133,7 +133,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$h5p_content = $this->h5p->show_editor()->createContent($form);
 
 		$h5p_content->setParentType("page");
-		$h5p_content->setObjId(0); // No id required linked to h5p page component. Parent type is enough
+		$h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
 
 		$h5p_content->update();
 
