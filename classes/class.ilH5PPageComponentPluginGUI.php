@@ -198,8 +198,19 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	}
 
 
+	/**
+	 *
+	 */
 	function copy() {
 		// TODO Copy content on page component copy
+	}
+
+
+	/**
+	 *
+	 */
+	function paste() {
+		// TODO Paste content on page component paste
 	}
 
 
