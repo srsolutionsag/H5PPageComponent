@@ -94,13 +94,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
-		$form = $this->h5p->show_editor()->getEditorForm($h5p_content);
-
-		$form->setFormAction($this->ctrl->getFormAction($this));
-
-		$form->addCommandButton($h5p_content !== NULL ? self::CMD_UPDATE : self::CMD_CREATE_PLUG, $this->txt($h5p_content
-		!== NULL ? "xhfp_save" : "xhfp_add"), "xhfp_edit_form_submit");
-		$form->addCommandButton(self::CMD_CANCEL, $this->txt("xhfp_cancel"));
+		$form = $this->h5p->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
 		//self::addCreationButton($form);
 
