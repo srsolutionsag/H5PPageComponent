@@ -179,6 +179,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	function delete() {
+		// TODO Delete content on page component delete
+
 		// The h5p page component contents will be deleted with the H5P cronjob
 
 		/*
