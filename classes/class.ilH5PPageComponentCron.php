@@ -1,4 +1,6 @@
 <?php
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
+require_once "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/vendor/autoload.php";
 
 /**
  * H5P page component cronjob
@@ -17,15 +19,15 @@ class ilH5PPageComponentCron {
 	protected $h5p;
 
 
-	function __construct() { }
+	function __construct() {
+
+	}
 
 
 	/**
 	 *
 	 */
 	function run() {
-		require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/classes/H5P/class.ilH5P.php";
-
 		global $DIC;
 
 		$this->db = $DIC->database();
@@ -54,9 +56,6 @@ class ilH5PPageComponentCron {
 	 * @return int[]
 	 */
 	protected function getPageComponentContentsInUse() {
-		require_once "Services/COPage/classes/class.ilPageObjectFactory.php";
-		require_once "Services/COPage/classes/class.ilPCPlugged.php";
-
 		$result = $this->db->query("SELECT page_id, parent_type FROM page_object");
 
 		$page_component_contents_in_use = [];

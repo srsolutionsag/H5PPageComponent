@@ -1,5 +1,6 @@
 <?php
-require_once "Services/COPage/classes/class.ilPageComponentPlugin.php";
+require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
+require_once "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/vendor/autoload.php";
 
 /**
  * H5P Page Component Plugin
