@@ -8,7 +8,7 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/COPage/PageComponent
 cd Customizing/global/plugins/Services/COPage/PageComponent
-git clone https://git.studer-raimann.ch/ILIAS/Plugins/H5PPageComponent H5PPageComponent
+git clone git@git.studer-raimann.ch:ILIAS/Plugins/H5PPageComponent.git H5PPageComponent
 ```
 
 ### Contact
