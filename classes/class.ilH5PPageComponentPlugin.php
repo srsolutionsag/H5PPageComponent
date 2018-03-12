@@ -51,4 +51,10 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	function isValidParentType($a_type) {
 		return true;
 	}
+
+
+	protected function beforeUninstall() {
+		// Nothing to delete
+		return true;
+	}
 }
