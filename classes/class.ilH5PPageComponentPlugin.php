@@ -30,8 +30,6 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 	public function __construct() {
 		parent::__construct();
-
-		global $DIC;
 	}
 
 
