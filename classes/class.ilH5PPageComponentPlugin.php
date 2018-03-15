@@ -7,6 +7,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
+	const PLUGIN_ID = "pchfp";
+	const PLUGIN_NAME = "H5PPageComponent";
 	/**
 	 * @var ilH5PPageComponentPlugin
 	 */
@@ -25,9 +27,6 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	}
 
 
-	const ID = "pchfp";
-
-
 	public function __construct() {
 		parent::__construct();
 	}
@@ -37,7 +36,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @return string
 	 */
 	function getPluginName() {
-		return "H5PPageComponent";
+		return self::PLUGIN_NAME;
 	}
 
 
