@@ -1,6 +1,6 @@
 <?php
-require_once "Customizing/global/plugins/Services/Repository/RepositoryObject/H5P/vendor/autoload.php";
-require_once "Customizing/global/plugins/Services/COPage/PageComponent/H5PPageComponent/vendor/autoload.php";
+require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 /**
  * H5P Page Component GUI
@@ -36,6 +36,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 
 	function __construct() {
+		parent::__construct();
+
 		global $DIC;
 
 		$this->ctrl = $DIC->ctrl();
