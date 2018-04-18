@@ -19,7 +19,10 @@ class ilH5PPageComponentCron {
 	protected $h5p;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 
 	}
 
@@ -27,7 +30,7 @@ class ilH5PPageComponentCron {
 	/**
 	 *
 	 */
-	function run() {
+	public function run() {
 		global $DIC;
 
 		$this->db = $DIC->database();

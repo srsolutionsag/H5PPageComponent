@@ -18,7 +18,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	/**
 	 * @return ilH5PPageComponentPlugin
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new self();
 		}
@@ -27,6 +27,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	}
 
 
+	/**
+	 *
+	 */
 	public function __construct() {
 		parent::__construct();
 	}
@@ -35,7 +38,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	/**
 	 * @return string
 	 */
-	function getPluginName() {
+	public function getPluginName() {
 		return self::PLUGIN_NAME;
 	}
 
@@ -45,11 +48,14 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 *
 	 * @return bool
 	 */
-	function isValidParentType($a_type) {
+	public function isValidParentType($a_type) {
 		return true;
 	}
 
 
+	/**
+	 * @return bool
+	 */
 	protected function beforeUninstall() {
 		// Nothing to delete
 		return true;

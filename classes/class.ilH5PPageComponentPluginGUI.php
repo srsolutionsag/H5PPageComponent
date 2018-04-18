@@ -35,7 +35,10 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	protected $tpl;
 
 
-	function __construct() {
+	/**
+	 *
+	 */
+	public function __construct() {
 		parent::__construct();
 
 		global $DIC;
@@ -49,7 +52,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function executeCommand() {
+	public function executeCommand() {
 		$next_class = $this->ctrl->getNextClass($this);
 
 		switch ($next_class) {
@@ -88,7 +91,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 
 	/**
-	 * @return ilPropertyFormGUI
+	 * @return ilH5PEditContentFormGUI
 	 */
 	protected function getEditorForm() {
 		$properties = $this->getProperties();
@@ -107,7 +110,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function insert() {
+	public function insert() {
 		$this->edit();
 	}
 
@@ -115,7 +118,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function create() {
+	public function create() {
 		$form = $this->getEditorForm();
 
 		$form->setValuesByPost();
@@ -145,7 +148,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function edit() {
+	public function edit() {
 		$form = $this->getEditorForm();
 
 		$this->show($form->getHTML());
@@ -155,7 +158,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function update() {
+	public function update() {
 		$form = $this->getEditorForm();
 
 		$form->setValuesByPost();
@@ -180,8 +183,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function delete() {
-		// TODO Delete content on page component delete
+	public function delete() {
+		// TODO Delete h5p content on page component delete
 
 		// The h5p page component contents will be deleted with the H5P cronjob
 
@@ -199,23 +202,23 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	function copy() {
-		// TODO Copy content on page component copy
+	public function copy() {
+		// TODO Copy h5p content on page component copy
 	}
 
 
 	/**
 	 *
 	 */
-	function paste() {
-		// TODO Paste content on page component paste
+	public function paste() {
+		// TODO Paste h5p content on page component paste
 	}
 
 
 	/**
 	 *
 	 */
-	function cancel() {
+	public function cancel() {
 		$this->returnToParent();
 	}
 
@@ -227,7 +230,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 * @return string
 	 */
-	function getElementHTML($a_mode, array $a_properties, $plugin_version) {
+	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
 		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
