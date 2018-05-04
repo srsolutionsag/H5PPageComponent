@@ -1,6 +1,6 @@
 ## Installation
 
-First install and enable [H5P repository plugin](https://git.studer-raimann.ch/ILIAS/Plugins/H5P).
+First install and enable [H5P repository plugin](https://github.com/studer-raimann/H5P).
 
 ### Install H5P page component plugin
 
