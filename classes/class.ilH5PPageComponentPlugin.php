@@ -49,6 +49,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @return bool
 	 */
 	public function isValidParentType($a_type) {
+		// Allow in all parent types
 		return true;
 	}
 
