@@ -39,7 +39,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function __construct() {
-		parent::__construct();
+		if (ILIAS_VERSION_NUMERIC >= "5.3") {
+			parent::__construct();
+		}
 
 		global $DIC;
 
