@@ -9,10 +9,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPageComponentCron {
 
-	/**
-	 * @var ilDB
-	 */
-	protected $db;
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	/**
 	 * @var ilH5P
 	 */
@@ -31,9 +29,6 @@ class ilH5PPageComponentCron {
 	 *
 	 */
 	public function run() {
-		global $DIC;
-
-		$this->db = $DIC->database();
 		$this->h5p = ilH5P::getInstance();
 
 		$this->deleteDeletedPageComponentContents();
@@ -59,7 +54,7 @@ class ilH5PPageComponentCron {
 	 * @return int[]
 	 */
 	protected function getPageComponentContentsInUse() {
-		$result = $this->db->query("SELECT page_id, parent_type FROM page_object");
+		$result = self::dic()->database()->query("SELECT page_id, parent_type FROM page_object");
 
 		$page_component_contents_in_use = [];
 		while (($page_component = $result->fetchAssoc()) !== false) {

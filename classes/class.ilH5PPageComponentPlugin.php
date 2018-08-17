@@ -7,6 +7,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = self::class;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	/**

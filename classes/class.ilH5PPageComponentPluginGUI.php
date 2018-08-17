@@ -9,6 +9,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
+	use srag\DIC\DICTrait;
+	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	const CMD_CANCEL = "cancel";
 	const CMD_CREATE = "create";
 	const CMD_CREATE_PLUG = "create_plug";
@@ -16,23 +18,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	const CMD_INSERT = "insert";
 	const CMD_UPDATE = "update";
 	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
 	 * @var ilH5P
 	 */
 	protected $h5p;
-	/**
-	 * Fix autocomplete (Defined in parent)
-	 *
-	 * @var ilH5PPageComponentPlugin
-	 */
-	protected $plugin;
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl;
 
 
 	/**
@@ -43,11 +31,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 			parent::__construct();
 		}
 
-		global $DIC;
-
-		$this->ctrl = $DIC->ctrl();
 		$this->h5p = ilH5P::getInstance();
-		$this->tpl = $DIC->ui()->mainTemplate();
 	}
 
 
@@ -55,11 +39,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function executeCommand() {
-		$next_class = $this->ctrl->getNextClass($this);
+		$next_class = self::dic()->ctrl()->getNextClass($this);
 
 		switch ($next_class) {
 			default:
-				$cmd = $this->ctrl->getCmd();
+				$cmd = self::dic()->ctrl()->getCmd();
 
 				switch ($cmd) {
 					case self::CMD_CANCEL:
@@ -82,12 +66,12 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
-		if ($this->ctrl->isAsynch()) {
+		if (self::dic()->ctrl()->isAsynch()) {
 			echo $html;
 
 			exit();
 		} else {
-			$this->tpl->setContent($html);
+			self::dic()->tpl()->setContent($html);
 		}
 	}
 
@@ -99,7 +83,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
+		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		$form = $this->h5p->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
@@ -235,12 +219,12 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
 		$h5p_content = ilH5PContent::getContentById($a_properties["content_id"]);
 
-		$this->ctrl->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
+		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		if ($h5p_content !== NULL) {
 			return $this->h5p->show_content()->getH5PContentIntegration($h5p_content);
 		} else {
-			return $this->plugin->txt("pchfp_content_not_exists");
+			return self::translate("pchfp_content_not_exists");
 		}
 	}
 
