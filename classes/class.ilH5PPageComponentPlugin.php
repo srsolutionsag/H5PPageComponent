@@ -12,7 +12,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	/**
-	 * @var self
+	 * @var self|null
 	 */
 	protected static $instance = NULL;
 
