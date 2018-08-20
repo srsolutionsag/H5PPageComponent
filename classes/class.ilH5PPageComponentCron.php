@@ -1,15 +1,18 @@
 <?php
+
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P page component cronjob
+ * Class ilH5PPageComponentCron
  *
  * Called in @see ilH5PCron
  */
 class ilH5PPageComponentCron {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	/**
 	 * @var ilH5P
@@ -18,7 +21,7 @@ class ilH5PPageComponentCron {
 
 
 	/**
-	 *
+	 * ilH5PPageComponentCron constructor
 	 */
 	public function __construct() {
 

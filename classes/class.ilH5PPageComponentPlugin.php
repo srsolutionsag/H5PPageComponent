@@ -1,13 +1,16 @@
 <?php
+
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Page Component Plugin
+ * Class ilH5PPageComponentPlugin
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = self::class;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
@@ -30,7 +33,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 
 	/**
-	 *
+	 * ilH5PPageComponentPlugin constructor
 	 */
 	public function __construct() {
 		parent::__construct();

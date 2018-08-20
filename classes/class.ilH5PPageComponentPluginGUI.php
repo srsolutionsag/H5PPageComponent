@@ -1,15 +1,18 @@
 <?php
+
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
- * H5P Page Component GUI
+ * Class ilH5PPageComponentPluginGUI
  *
  * @ilCtrl_isCalledBy ilH5PPageComponentPluginGUI: ilPCPluggedGUI
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
-	use srag\DIC\DICTrait;
+	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	const CMD_CANCEL = "cancel";
 	const CMD_CREATE = "create";
@@ -24,7 +27,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 
 	/**
-	 *
+	 * ilH5PPageComponentPluginGUI constructor
 	 */
 	public function __construct() {
 		if (ILIAS_VERSION_NUMERIC >= "5.3") {
