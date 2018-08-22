@@ -11,9 +11,9 @@ use srag\DIC\DICTrait;
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 	use DICTrait;
-	const PLUGIN_CLASS_NAME = self::class;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
+	const PLUGIN_CLASS_NAME = self::class;
 	/**
 	 * @var self|null
 	 */
