@@ -44,7 +44,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function executeCommand() {
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 
-		switch ($next_class) {
+		switch (strtolower($next_class)) {
 			default:
 				$cmd = self::dic()->ctrl()->getCmd();
 
@@ -69,13 +69,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @param string $html
 	 */
 	protected function show($html) {
-		if (self::dic()->ctrl()->isAsynch()) {
-			echo $html;
-
-			exit();
-		} else {
-			self::dic()->tpl()->setContent($html);
-		}
+		self::show($html);
 	}
 
 
@@ -173,7 +167,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function delete() {
-		// TODO Delete h5p content on page component delete
+		// TODO: Delete h5p content on page component delete
 
 		// The h5p page component contents will be deleted with the H5P cronjob
 
@@ -192,7 +186,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function copy() {
-		// TODO Copy h5p content on page component copy
+		// TODO: Copy h5p content on page component copy
 	}
 
 
@@ -200,7 +194,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function paste() {
-		// TODO Paste h5p content on page component paste
+		// TODO: Paste h5p content on page component paste
 	}
 
 
@@ -229,15 +223,5 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		} else {
 			return self::translate("pchfp_content_not_exists");
 		}
-	}
-
-
-	/**
-	 * @param string $a_var
-	 *
-	 * @return string
-	 */
-	protected function txt($a_var) {
-		return ilH5PPlugin::getInstance()->txt($a_var);
 	}
 }
