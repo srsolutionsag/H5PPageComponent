@@ -1,14 +1,23 @@
 <?php
 
-require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
-require_once __DIR__ . "/../vendor/autoload.php";
+namespace srag\Plugins\H5PPageComponent\Cron;
 
+use Exception;
+use ilH5PPageComponentPlugin;
+use ilPageContent;
+use ilPageObject;
+use ilPageObjectFactory;
+use ilPCPlugged;
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
+use srag\Plugins\H5P\H5P\ilH5P;
 
 /**
  * Class ilH5PPageComponentCron
  *
  * Called in @see ilH5PCron
+ *
+ * @package srag\Plugins\H5PPageComponent\Cron
  */
 class ilH5PPageComponentCron {
 

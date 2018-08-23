@@ -4,22 +4,38 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitab92e1d35c6fb1384822fe8aa87738b5
+class ComposerStaticInitb23b986c407ca11119ba01b9609ee5b3
 {
+    public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'srag\\Plugins\\H5PPageComponent\\' => 30,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'srag\\Plugins\\H5PPageComponent\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
+    );
+
     public static $classMap = array (
-        'ilH5PPageComponentCron' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentCron.php',
         'ilH5PPageComponentPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPlugin.php',
         'ilH5PPageComponentPluginGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPluginGUI.php',
         'ilPCPlugged' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPCPlugged.php',
         'ilPageComponentPlugin' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php',
         'ilPageComponentPluginGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php',
         'ilPageObjectFactory' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php',
+        'srag\\Plugins\\H5PPageComponent\\Cron\\ilH5PPageComponentCron' => __DIR__ . '/../..' . '/src/Cron/class.ilH5PPageComponentCron.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitab92e1d35c6fb1384822fe8aa87738b5::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb23b986c407ca11119ba01b9609ee5b3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb23b986c407ca11119ba01b9609ee5b3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb23b986c407ca11119ba01b9609ee5b3::$classMap;
 
         }, null, ClassLoader::class);
     }

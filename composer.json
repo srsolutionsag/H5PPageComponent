@@ -1,5 +1,8 @@
 {
   "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\H5PPageComponent\\": "src/"
+    },
     "classmap": [
       "classes/",
       "../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php",
