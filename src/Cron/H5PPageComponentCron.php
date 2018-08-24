@@ -9,28 +9,28 @@ use ilPageObject;
 use ilPageObjectFactory;
 use ilPCPlugged;
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\ilH5PContent;
-use srag\Plugins\H5P\H5P\ilH5P;
+use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\H5P\H5P;
 
 /**
- * Class ilH5PPageComponentCron
+ * Class H5PPageComponentCron
  *
- * Called in @see ilH5PCron
+ * Called in @see H5PCron
  *
  * @package srag\Plugins\H5PPageComponent\Cron
  */
-class ilH5PPageComponentCron {
+class H5PPageComponentCron {
 
 	use DICTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	/**
-	 * @var ilH5P
+	 * @var H5P
 	 */
 	protected $h5p;
 
 
 	/**
-	 * ilH5PPageComponentCron constructor
+	 * H5PPageComponentCron constructor
 	 */
 	public function __construct() {
 
@@ -41,7 +41,7 @@ class ilH5PPageComponentCron {
 	 *
 	 */
 	public function run() {
-		$this->h5p = ilH5P::getInstance();
+		$this->h5p = H5P::getInstance();
 
 		$this->deleteDeletedPageComponentContents();
 	}
@@ -51,7 +51,7 @@ class ilH5PPageComponentCron {
 	 *
 	 */
 	protected function deleteDeletedPageComponentContents() {
-		$h5p_contents = ilH5PContent::getContentsByObject(NULL, "page");
+		$h5p_contents = H5PContent::getContentsByObject(NULL, "page");
 		$page_component_contents_in_use = $this->getPageComponentContentsInUse();
 
 		foreach ($h5p_contents as $h5p_content) {
