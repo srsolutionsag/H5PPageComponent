@@ -27,7 +27,7 @@ class ComposerStaticInitb23b986c407ca11119ba01b9609ee5b3
         'ilPageComponentPlugin' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php',
         'ilPageComponentPluginGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php',
         'ilPageObjectFactory' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php',
-        'srag\\Plugins\\H5PPageComponent\\Cron\\ilH5PPageComponentCron' => __DIR__ . '/../..' . '/src/Cron/class.ilH5PPageComponentCron.php',
+        'srag\\Plugins\\H5PPageComponent\\Cron\\ilH5PPageComponentCron' => __DIR__ . '/../..' . '/src/Cron/ilH5PPageComponentCron.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
