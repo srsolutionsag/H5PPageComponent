@@ -1,4 +1,7 @@
 {
+  "require": {
+    "php": "^5.6"
+  },
   "autoload": {
     "psr-4": {
       "srag\\Plugins\\H5PPageComponent\\": "src/"
