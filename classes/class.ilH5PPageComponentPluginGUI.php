@@ -66,14 +66,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 
 	/**
-	 * @param string $html
-	 */
-	protected function show($html) {
-		self::show($html);
-	}
-
-
-	/**
 	 * @return ilH5PEditContentFormGUI
 	 */
 	protected function getEditorForm() {
@@ -107,7 +99,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			self::output($form);
 
 			return;
 		}
@@ -134,7 +126,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function edit() {
 		$form = $this->getEditorForm();
 
-		$this->show($form->getHTML());
+		self::output($form);
 	}
 
 
@@ -147,7 +139,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			$this->show($form->getHTML());
+			self::output($form);
 
 			return;
 		}
