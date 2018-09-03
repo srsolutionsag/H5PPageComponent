@@ -99,7 +99,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::output($form);
+			self::plugin()->output($form);
 
 			return;
 		}
@@ -126,7 +126,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function edit() {
 		$form = $this->getEditorForm();
 
-		self::output($form);
+		self::plugin()->output($form);
 	}
 
 
@@ -139,7 +139,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::output($form);
+			self::plugin()->output($form);
 
 			return;
 		}
@@ -213,7 +213,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		if ($h5p_content !== NULL) {
 			return $this->h5p->show_content()->getH5PContentIntegration($h5p_content);
 		} else {
-			return self::translate("pchfp_content_not_exists");
+			return self::plugin()->translate("pchfp_content_not_exists");
 		}
 	}
 }
