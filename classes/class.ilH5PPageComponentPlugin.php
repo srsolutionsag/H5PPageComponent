@@ -4,6 +4,8 @@ require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/auto
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
+use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\H5P\H5P;
 
 /**
  * Class ilH5PPageComponentPlugin
@@ -33,10 +35,18 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 
 	/**
+	 * @var H5P
+	 */
+	protected $h5p;
+
+
+	/**
 	 * ilH5PPageComponentPlugin constructor
 	 */
 	public function __construct() {
 		parent::__construct();
+
+		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -56,6 +66,40 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	public function isValidParentType($a_type) {
 		// Allow in all parent types
 		return true;
+	}
+
+
+	/**
+	 * @param array  $properties
+	 * @param string $a_plugin_version
+	 */
+	public function onDelete($properties, $a_plugin_version) {
+		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+
+		if ($h5p_content !== NULL) {
+			$this->h5p->show_editor()->deleteContent($h5p_content);
+		}
+	}
+
+
+	/**
+	 * @param array  $properties
+	 * @param string $a_plugin_version
+	 */
+	public function onClone(&$properties, $a_plugin_version) {
+		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+
+		/**
+		 * @var H5PContent $h5p_content_copy
+		 */
+
+		$h5p_content_copy = $h5p_content->copy();
+
+		$h5p_content_copy->store();
+
+		$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+
+		$properties["content_id"] = $h5p_content_copy->getContentId();
 	}
 
 

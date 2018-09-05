@@ -161,41 +161,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	/**
 	 *
 	 */
-	public function delete() {
-		// TODO: Delete h5p content on page component delete
-
-		// The h5p page component contents will be deleted with the H5P cronjob
-
-		/*
-		$properties = $this->getProperties();
-		$h5p_content = ilH5PContent::getContentById($properties["content_id"]);
-
-		if ($h5p_content !== NULL) {
-			$this->h5p->show_editor()->deleteContent($h5p_content);
-		}
-		*/
-	}
-
-
-	/**
-	 *
-	 */
-	public function copy() {
-		// TODO: Copy h5p content on page component copy
-	}
-
-
-	/**
-	 *
-	 */
-	public function paste() {
-		// TODO: Paste h5p content on page component paste
-	}
-
-
-	/**
-	 *
-	 */
 	public function cancel() {
 		$this->returnToParent();
 	}
