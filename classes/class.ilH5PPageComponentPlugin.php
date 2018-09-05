@@ -3,19 +3,21 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\H5P\H5P;
+use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
 
 /**
  * Class ilH5PPageComponentPlugin
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use DICTrait;
+	use RepositoryObjectPluginUninstallTrait;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	const PLUGIN_CLASS_NAME = self::class;
+	const REMOVE_PLUGIN_DATA_CONFIRM = false;
+	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = H5PRemoveDataConfirm::class;
 	/**
 	 * @var self|null
 	 */
@@ -104,10 +106,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 
 	/**
-	 * @return bool
+	 * @inheritdoc
 	 */
-	protected function beforeUninstall() {
+	protected function deleteData() {
 		// Nothing to delete
-		return true;
 	}
 }
