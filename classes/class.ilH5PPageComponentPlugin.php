@@ -5,14 +5,14 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\H5P\H5P;
-use srag\RemovePluginDataConfirm\RepositoryObjectPluginUninstallTrait;
+use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 
 /**
  * Class ilH5PPageComponentPlugin
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use RepositoryObjectPluginUninstallTrait;
+	use PluginUninstallTrait;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	const PLUGIN_CLASS_NAME = self::class;
