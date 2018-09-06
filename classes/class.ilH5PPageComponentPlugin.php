@@ -73,9 +73,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 	/**
 	 * @param array  $properties
-	 * @param string $a_plugin_version
+	 * @param string $plugin_version
 	 */
-	public function onDelete($properties, $a_plugin_version) {
+	public function onDelete($properties, $plugin_version) {
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
 
 		if ($h5p_content !== NULL) {
@@ -86,9 +86,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 	/**
 	 * @param array  $properties
-	 * @param string $a_plugin_version
+	 * @param string $plugin_version
 	 */
-	public function onClone(&$properties, $a_plugin_version) {
+	public function onClone(&$properties, $plugin_version) {
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
 
 		/**
