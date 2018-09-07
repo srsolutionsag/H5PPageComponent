@@ -9,6 +9,8 @@ use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 
 /**
  * Class ilH5PPageComponentPlugin
+ *
+ * @author studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 

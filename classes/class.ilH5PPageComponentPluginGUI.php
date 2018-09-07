@@ -11,6 +11,8 @@ use srag\Plugins\H5P\H5P\H5P;
 /**
  * Class ilH5PPageComponentPluginGUI
  *
+ * @author            studer + raimann ag <support-custom1@studer-raimann.ch>
+ *
  * @ilCtrl_isCalledBy ilH5PPageComponentPluginGUI: ilPCPluggedGUI
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {

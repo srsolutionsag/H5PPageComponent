@@ -18,6 +18,7 @@ use srag\Plugins\H5P\H5P\H5P;
  * Called in @see H5PCron
  *
  * @package srag\Plugins\H5PPageComponent\Cron
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 class H5PPageComponentCron {
 
