@@ -10,6 +10,7 @@ mkdir -p Customizing/global/plugins/Services/COPage/PageComponent
 cd Customizing/global/plugins/Services/COPage/PageComponent
 git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponent
 ```
+Update and activate the plugin in the ILIAS Plugin Administration
 
 ### Dependencies
 * [H5P repository plugin](https://github.com/studer-raimann/H5P)
