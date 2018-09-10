@@ -11,6 +11,11 @@ cd Customizing/global/plugins/Services/COPage/PageComponent
 git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponent
 ```
 
+### Dependencies
+* [H5P repository plugin](https://github.com/studer-raimann/H5P)
+
+Please use it for further development!
+
 ### Contact
 info@studer-raimann.ch  
 https://studer-raimann.ch  
