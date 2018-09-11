@@ -19,5 +19,5 @@ Update and activate the plugin in the ILIAS Plugin Administration
 Please use it for further development!
 
 ### Contact
-info@studer-raimann.ch  
-https://studer-raimann.ch  
+support-custom1@studer-raimann.ch
+https://studer-raimann.ch
