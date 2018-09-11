@@ -13,6 +13,7 @@ git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponen
 Update and activate the plugin in the ILIAS Plugin Administration
 
 ### Dependencies
+* [composer](https://getcomposer.org)
 * [H5P repository plugin](https://github.com/studer-raimann/H5P)
 
 Please use it for further development!
