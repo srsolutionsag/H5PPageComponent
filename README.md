@@ -4,7 +4,7 @@ First install and enable [H5P repository plugin](https://github.com/studer-raima
 
 ### Install H5P page component plugin
 
-Start at your ILIAS root directory 
+Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/COPage/PageComponent
 cd Customizing/global/plugins/Services/COPage/PageComponent
