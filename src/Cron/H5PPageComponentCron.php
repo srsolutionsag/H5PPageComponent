@@ -17,22 +17,31 @@ use srag\Plugins\H5P\H5P\H5P;
  *
  * Called in @see H5PCron
  *
- * @package srag\Plugins\H5PPageComponent\Cron
+ * @package    srag\Plugins\H5PPageComponent\Cron
  *
- * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
+ * @author     studer + raimann ag <support-custom1@studer-raimann.ch>
+ *
+ * @deprecated since ILIAS 5.3
  */
 class H5PPageComponentCron {
 
 	use DICTrait;
+	/**
+	 * @deprecated since ILIAS 5.3
+	 */
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	/**
 	 * @var H5P
+	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	protected $h5p;
 
 
 	/**
 	 * H5PPageComponentCron constructor
+	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	public function __construct() {
 
@@ -40,7 +49,7 @@ class H5PPageComponentCron {
 
 
 	/**
-	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	public function run() {
 		$this->h5p = H5P::getInstance();
@@ -50,7 +59,7 @@ class H5PPageComponentCron {
 
 
 	/**
-	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	protected function deleteDeletedPageComponentContents() {
 		$h5p_contents = H5PContent::getContentsByObject(NULL, "page");
@@ -66,6 +75,8 @@ class H5PPageComponentCron {
 
 	/**
 	 * @return int[]
+	 *
+	 * @deprecated since ILIAS 5.3
 	 */
 	protected function getPageComponentContentsInUse() {
 		$result = self::dic()->database()->query("SELECT page_id, parent_type FROM page_object");
