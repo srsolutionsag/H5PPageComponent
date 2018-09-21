@@ -35,10 +35,5 @@
       "../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php",
       "../../../../../../../Services/COPage/classes/class.ilPCPlugged.php"
     ]
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "sort-packages": true,
-    "classmap-authoritative": true
   }
 }
