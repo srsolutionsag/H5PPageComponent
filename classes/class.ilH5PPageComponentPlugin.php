@@ -110,7 +110,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	/**
 	 * @inheritdoc
 	 */
-	protected function deleteData() {
+	protected function deleteData()/*: void*/ {
 		// Nothing to delete
 	}
 }
