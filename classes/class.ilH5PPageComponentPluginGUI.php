@@ -3,10 +3,9 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class ilH5PPageComponentPluginGUI
@@ -17,7 +16,7 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
-	use DICTrait;
+	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	const CMD_CANCEL = "cancel";
 	const CMD_CREATE = "create";
@@ -25,10 +24,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	const CMD_EDIT = "edit";
 	const CMD_INSERT = "insert";
 	const CMD_UPDATE = "update";
-	/**
-	 * @var H5P
-	 */
-	protected $h5p;
 
 
 	/**
@@ -38,8 +33,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		if (ILIAS_VERSION_NUMERIC >= "5.3") {
 			parent::__construct();
 		}
-
-		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -79,7 +72,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
-		$form = $this->h5p->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
+		$form = self::h5p()->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
 		//self::addCreationButton($form);
 
@@ -109,7 +102,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 			return;
 		}
 
-		$h5p_content = $this->h5p->show_editor()->createContent($form);
+		$h5p_content = self::h5p()->show_editor()->createContent($form);
 
 		$h5p_content->setParentType("page");
 		$h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
@@ -152,7 +145,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
 
-		$this->h5p->show_editor()->updateContent($h5p_content, $form);
+		self::h5p()->show_editor()->updateContent($h5p_content, $form);
 
 		$this->updateElement($properties);
 
@@ -181,7 +174,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		if ($h5p_content !== NULL) {
-			return $this->h5p->show_content()->getH5PContentIntegration($h5p_content);
+			return self::h5p()->show_content()->getH5PContentIntegration($h5p_content);
 		} else {
 			return self::plugin()->translate("pchfp_content_not_exists");
 		}

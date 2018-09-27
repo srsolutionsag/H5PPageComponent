@@ -8,9 +8,8 @@ use ilPageContent;
 use ilPageObject;
 use ilPageObjectFactory;
 use ilPCPlugged;
-use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 
 /**
  * Class H5PPageComponentCron
@@ -25,17 +24,11 @@ use srag\Plugins\H5P\H5P\H5P;
  */
 class H5PPageComponentCron {
 
-	use DICTrait;
+	use H5PTrait;
 	/**
 	 * @deprecated since ILIAS 5.3
 	 */
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
-	/**
-	 * @var H5P
-	 *
-	 * @deprecated since ILIAS 5.3
-	 */
-	protected $h5p;
 
 
 	/**
@@ -52,8 +45,6 @@ class H5PPageComponentCron {
 	 * @deprecated since ILIAS 5.3
 	 */
 	public function run() {
-		$this->h5p = H5P::getInstance();
-
 		$this->deleteDeletedPageComponentContents();
 	}
 
@@ -67,7 +58,7 @@ class H5PPageComponentCron {
 
 		foreach ($h5p_contents as $h5p_content) {
 			if (!in_array($h5p_content->getContentId(), $page_component_contents_in_use)) {
-				$this->h5p->show_editor()->deleteContent($h5p_content, false);
+				self::h5p()->show_editor()->deleteContent($h5p_content, false);
 			}
 		}
 	}

@@ -4,7 +4,7 @@ require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/auto
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
-use srag\Plugins\H5P\H5P\H5P;
+use srag\Plugins\H5P\Utitls\H5PTrait;
 use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 
 /**
@@ -14,7 +14,11 @@ use srag\RemovePluginDataConfirm\PluginUninstallTrait;
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use PluginUninstallTrait;
+	use H5PTrait, PluginUninstallTrait {
+		H5PTrait::dic insteadof PluginUninstallTrait;
+		H5PTrait::plugin insteadof PluginUninstallTrait;
+		H5PTrait::checkPluginClassNameConst insteadof PluginUninstallTrait;
+	}
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	const PLUGIN_CLASS_NAME = self::class;
@@ -39,18 +43,10 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 
 	/**
-	 * @var H5P
-	 */
-	protected $h5p;
-
-
-	/**
 	 * ilH5PPageComponentPlugin constructor
 	 */
 	public function __construct() {
 		parent::__construct();
-
-		$this->h5p = H5P::getInstance();
 	}
 
 
@@ -81,7 +77,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
 
 		if ($h5p_content !== NULL) {
-			$this->h5p->show_editor()->deleteContent($h5p_content);
+			self::h5p()->show_editor()->deleteContent($h5p_content);
 		}
 	}
 
@@ -101,7 +97,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 		$h5p_content_copy->store();
 
-		$this->h5p->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+		self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 
 		$properties["content_id"] = $h5p_content_copy->getContentId();
 	}
