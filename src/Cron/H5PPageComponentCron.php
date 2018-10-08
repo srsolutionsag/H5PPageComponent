@@ -8,6 +8,7 @@ use ilPageContent;
 use ilPageObject;
 use ilPageObjectFactory;
 use ilPCPlugged;
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
@@ -24,6 +25,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class H5PPageComponentCron {
 
+	use DICTrait;
 	use H5PTrait;
 	/**
 	 * @deprecated since ILIAS 5.3

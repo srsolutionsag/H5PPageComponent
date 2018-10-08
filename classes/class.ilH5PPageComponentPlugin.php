@@ -14,11 +14,8 @@ use srag\RemovePluginDataConfirm\PluginUninstallTrait;
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use H5PTrait, PluginUninstallTrait {
-		H5PTrait::dic insteadof PluginUninstallTrait;
-		H5PTrait::plugin insteadof PluginUninstallTrait;
-		H5PTrait::checkPluginClassNameConst insteadof PluginUninstallTrait;
-	}
+	use PluginUninstallTrait;
+	use H5PTrait;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	const PLUGIN_CLASS_NAME = self::class;

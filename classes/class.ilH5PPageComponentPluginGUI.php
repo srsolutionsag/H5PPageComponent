@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
 use srag\Plugins\H5P\ActiveRecord\H5PContent;
 use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
@@ -16,6 +17,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
+	use DICTrait;
 	use H5PTrait;
 	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
 	const CMD_CANCEL = "cancel";
