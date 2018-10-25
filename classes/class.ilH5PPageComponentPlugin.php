@@ -69,6 +69,8 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	/**
 	 * @param array  $properties
 	 * @param string $plugin_version
+	 *
+	 * @since ILIAS 5.3
 	 */
 	public function onDelete($properties, $plugin_version) {
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
@@ -82,6 +84,8 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	/**
 	 * @param array  $properties
 	 * @param string $plugin_version
+	 *
+	 * @since ILIAS 5.3
 	 */
 	public function onClone(&$properties, $plugin_version) {
 		$h5p_content = H5PContent::getContentById($properties["content_id"]);
