@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 
@@ -73,7 +73,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @since ILIAS 5.3
 	 */
 	public function onDelete($properties, $plugin_version) {
-		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+		$h5p_content = Content::getContentById($properties["content_id"]);
 
 		if ($h5p_content !== NULL) {
 			self::h5p()->show_editor()->deleteContent($h5p_content);
@@ -88,10 +88,10 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @since ILIAS 5.3
 	 */
 	public function onClone(&$properties, $plugin_version) {
-		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+		$h5p_content = Content::getContentById($properties["content_id"]);
 
 		/**
-		 * @var H5PContent $h5p_content_copy
+		 * @var Content $h5p_content_copy
 		 */
 
 		$h5p_content_copy = $h5p_content->copy();

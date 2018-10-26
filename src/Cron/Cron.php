@@ -9,13 +9,13 @@ use ilPageObject;
 use ilPageObjectFactory;
 use ilPCPlugged;
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\H5PContent;
+use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
- * Class H5PPageComponentCron
+ * Class Cron
  *
- * Called in @see H5PCron
+ * Called in @see \srag\Plugins\H5P\Cron\Cron
  *
  * @package    srag\Plugins\H5PPageComponent\Cron
  *
@@ -23,7 +23,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
  *
  * @deprecated since ILIAS 5.3
  */
-class H5PPageComponentCron {
+class Cron {
 
 	use DICTrait;
 	use H5PTrait;
@@ -34,7 +34,7 @@ class H5PPageComponentCron {
 
 
 	/**
-	 * H5PPageComponentCron constructor
+	 * Cron constructor
 	 *
 	 * @deprecated since ILIAS 5.3
 	 */
@@ -55,7 +55,7 @@ class H5PPageComponentCron {
 	 * @deprecated since ILIAS 5.3
 	 */
 	protected function deleteDeletedPageComponentContents() {
-		$h5p_contents = H5PContent::getContentsByObject(NULL, "page");
+		$h5p_contents = Content::getContentsByObject(NULL, "page");
 		$page_component_contents_in_use = $this->getPageComponentContentsInUse();
 
 		foreach ($h5p_contents as $h5p_content) {

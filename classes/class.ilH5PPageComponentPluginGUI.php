@@ -4,8 +4,8 @@ require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/auto
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\DICTrait;
-use srag\Plugins\H5P\ActiveRecord\H5PContent;
-use srag\Plugins\H5P\GUI\H5PEditContentFormGUI;
+use srag\Plugins\H5P\Content\Content;
+use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -66,13 +66,13 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 
 	/**
-	 * @return H5PEditContentFormGUI
+	 * @return EditContentFormGUI
 	 */
 	protected function getEditorForm() {
 		$properties = $this->getProperties();
-		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+		$h5p_content = Content::getContentById($properties["content_id"]);
 
-		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
+		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		$form = self::h5p()->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
@@ -145,7 +145,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		}
 
 		$properties = $this->getProperties();
-		$h5p_content = H5PContent::getContentById($properties["content_id"]);
+		$h5p_content = Content::getContentById($properties["content_id"]);
 
 		self::h5p()->show_editor()->updateContent($h5p_content, $form);
 
@@ -171,9 +171,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
-		$h5p_content = H5PContent::getContentById($a_properties["content_id"]);
+		$h5p_content = Content::getContentById($a_properties["content_id"]);
 
-		self::dic()->ctrl()->setParameterByClass(ilH5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
+		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		if ($h5p_content !== NULL) {
 			return self::h5p()->show_content()->getH5PContentIntegration($h5p_content);
