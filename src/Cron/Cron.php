@@ -3,6 +3,7 @@
 namespace srag\Plugins\H5PPageComponent\Cron;
 
 use Exception;
+use ilCronJobResult;
 use ilH5PPageComponentPlugin;
 use ilPageContent;
 use ilPageObject;
@@ -44,17 +45,13 @@ class Cron {
 
 
 	/**
+	 * @return ilCronJobResult
+	 *
 	 * @deprecated since ILIAS 5.3
 	 */
-	public function run() {
-		$this->deleteDeletedPageComponentContents();
-	}
+	public function deleteDeletedPageComponentContents() {
+		$result = new ilCronJobResult();
 
-
-	/**
-	 * @deprecated since ILIAS 5.3
-	 */
-	protected function deleteDeletedPageComponentContents() {
 		$h5p_contents = Content::getContentsByObject(NULL, "page");
 		$page_component_contents_in_use = $this->getPageComponentContentsInUse();
 
@@ -63,6 +60,10 @@ class Cron {
 				self::h5p()->show_editor()->deleteContent($h5p_content, false);
 			}
 		}
+
+		$result->setStatus(ilCronJobResult::STATUS_OK);
+
+		return $result;
 	}
 
 
