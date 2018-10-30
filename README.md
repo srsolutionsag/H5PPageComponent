@@ -12,6 +12,9 @@ git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponen
 ```
 Update and activate the plugin in the ILIAS Plugin Administration
 
+### Some screenshots
+TODO
+
 ### Dependencies
 * ILIAS 5.2 or ILIAS 5.3
 * PHP >=5.6
