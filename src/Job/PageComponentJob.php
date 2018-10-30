@@ -12,7 +12,6 @@ use ilPageObjectFactory;
 use ilPCPlugged;
 use srag\DIC\DICTrait;
 use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Utils\H5P;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -70,7 +69,7 @@ class PageComponentJob extends ilCronJob {
 	 * @deprecated since ILIAS 5.3
 	 */
 	public function getTitle() {
-		return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate("page_component", H5P::LANG_MODULE_CRON);
+		return ilH5PPlugin::PLUGIN_NAME . ": " . self::plugin()->translate(self::CRON_JOB_ID, ilH5PPlugin::LANG_MODULE_CRON);
 	}
 
 
@@ -80,8 +79,8 @@ class PageComponentJob extends ilCronJob {
 	 * @deprecated since ILIAS 5.3
 	 */
 	public function getDescription() {
-		return self::plugin()->translate("page_component_description", H5P::LANG_MODULE_CRON) . "<br><br>" . self::plugin()
-				->translate("page_component_description_deprecated", H5P::LANG_MODULE_CRON);
+		return self::plugin()->translate(self::CRON_JOB_ID . "_description", ilH5PPlugin::LANG_MODULE_CRON) . "<br><br>" . self::plugin()
+				->translate(self::CRON_JOB_ID . "_description_deprecated", ilH5PPlugin::LANG_MODULE_CRON);
 	}
 
 
@@ -156,7 +155,7 @@ class PageComponentJob extends ilCronJob {
 			$result->setStatus(ilCronJobResult::STATUS_OK);
 		} else {
 			$result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
-			$result->setMessage(self::plugin()->translate("cron_page_component_description_deprecated", H5P::LANG_MODULE_CRON));
+			$result->setMessage(self::plugin()->translate(self::CRON_JOB_ID . "_description_deprecated", ilH5PPlugin::LANG_MODULE_CRON));
 		}
 
 		return $result;

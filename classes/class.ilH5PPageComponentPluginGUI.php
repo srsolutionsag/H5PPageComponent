@@ -19,7 +19,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 	use DICTrait;
 	use H5PTrait;
-	const PLUGIN_CLASS_NAME = ilH5PPageComponentPlugin::class;
+	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
 	const CMD_CANCEL = "cancel";
 	const CMD_CREATE = "create";
 	const CMD_CREATE_PLUG = "create_plug";
@@ -178,7 +178,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		if ($h5p_content !== NULL) {
 			return self::h5p()->show_content()->getH5PContentIntegration($h5p_content);
 		} else {
-			return self::plugin()->translate("pchfp_content_not_exists");
+			return self::plugin()->translate("content_not_exists");
 		}
 	}
 }
