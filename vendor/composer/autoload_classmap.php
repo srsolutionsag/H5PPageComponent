@@ -12,5 +12,5 @@ return array(
     'ilPageComponentPlugin' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php',
     'ilPageComponentPluginGUI' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php',
     'ilPageObjectFactory' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php',
-    'srag\\Plugins\\H5PPageComponent\\Cron\\Cron' => $baseDir . '/src/Cron/Cron.php',
+    'srag\\Plugins\\H5PPageComponent\\Job\\PageComponentJob' => $baseDir . '/src/Job/PageComponentJob.php',
 );
