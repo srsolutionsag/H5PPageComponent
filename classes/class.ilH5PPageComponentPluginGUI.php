@@ -176,9 +176,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		if ($h5p_content !== NULL) {
-			return self::h5p()->show_content()->getH5PContentIntegration($h5p_content);
+			return self::h5p()->show_content()->getH5PContent($h5p_content);
 		} else {
-			return self::plugin()->translate("content_not_exists");
+			return self::plugin()->translate("content_not_exists") . "<br>";
 		}
 	}
 }
