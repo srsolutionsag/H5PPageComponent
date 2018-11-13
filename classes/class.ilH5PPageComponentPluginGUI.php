@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;

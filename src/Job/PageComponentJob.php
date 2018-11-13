@@ -10,7 +10,7 @@ use ilPageContent;
 use ilPageObject;
 use ilPageObjectFactory;
 use ilPCPlugged;
-use srag\DIC\DICTrait;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
