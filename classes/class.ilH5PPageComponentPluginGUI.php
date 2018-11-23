@@ -32,7 +32,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * ilH5PPageComponentPluginGUI constructor
 	 */
 	public function __construct() {
-		if (ILIAS_VERSION_NUMERIC >= "5.3") {
+		if (self::version()->is53()) {
 			parent::__construct();
 		}
 	}
@@ -99,7 +99,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::plugin()->output($form);
+			self::output()->output($form);
 
 			return;
 		}
@@ -126,7 +126,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function edit() {
 		$form = $this->getEditorForm();
 
-		self::plugin()->output($form);
+		self::output()->output($form);
 	}
 
 
@@ -139,7 +139,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$form->setValuesByPost();
 
 		if (!$form->checkInput()) {
-			self::plugin()->output($form);
+			self::output()->output($form);
 
 			return;
 		}
