@@ -5,7 +5,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
-use srag\RemovePluginDataConfirm\PluginUninstallTrait;
+use srag\RemovePluginDataConfirm\H5P\PluginUninstallTrait;
 
 /**
  * Class ilH5PPageComponentPlugin
