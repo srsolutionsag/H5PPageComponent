@@ -1,5 +1,32 @@
 {
+  "name": "srag/plugins/h5ppagecomponent",
+  "description": "",
+  "type": "project",
+  "keywords": [
+    "ILIAS",
+    "Plugin",
+    "H5P"
+  ],
+  "homepage": "https://github.com/studer-raimann/H5PPageComponent",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "studer + raimann ag - Team Custom 1",
+      "email": "support-custom1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support-custom1@studer-raimann.ch"
+  },
+  "require": {
+    "php": ">=5.6"
+  },
   "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\H5PPageComponent\\": "src/"
+    },
     "classmap": [
       "classes/",
       "../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php",
@@ -9,8 +36,8 @@
     ]
   },
   "config": {
+    "classmap-authoritative": true,
     "optimize-autoloader": true,
-    "sort-packages": true,
-    "classmap-authoritative": true
+    "sort-packages": true
   }
 }
