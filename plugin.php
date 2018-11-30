@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . "/../../../Repository/RepositoryObject/H5P/vendor/srag/dic/src/PHPVersionChecker.php";
+
 $id = "pchfp";
 $version = "1.1.0";
 $ilias_min_version = "5.2.0";
