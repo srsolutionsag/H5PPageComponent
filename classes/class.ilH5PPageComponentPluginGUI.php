@@ -96,9 +96,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function create() {
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			self::output()->output($form);
 
 			return;
@@ -136,9 +134,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function update() {
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			self::output()->output($form);
 
 			return;
