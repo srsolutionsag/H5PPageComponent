@@ -143,7 +143,7 @@ class PageComponentJob extends ilCronJob {
 		$result = new ilCronJobResult();
 
 		if (!self::version()->is53()) {
-			$h5p_contents = Content::getContentsByObject(NULL, "page");
+			$h5p_contents = Content::getContentsByObject(NULL, Content::PARENT_TYPE_PAGE);
 			$page_component_contents_in_use = $this->getPageComponentContentsInUse();
 
 			foreach ($h5p_contents as $h5p_content) {

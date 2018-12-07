@@ -96,9 +96,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function create() {
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			self::output()->output($form);
 
 			return;
@@ -106,7 +104,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		$h5p_content = self::h5p()->show_editor()->createContent($form);
 
-		$h5p_content->setParentType("page");
+		$h5p_content->setParentType(Content::PARENT_TYPE_PAGE);
 		$h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
 
 		$h5p_content->store();
@@ -136,9 +134,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	public function update() {
 		$form = $this->getEditorForm();
 
-		$form->setValuesByPost();
-
-		if (!$form->checkInput()) {
+		if (!$form->storeForm()) {
 			self::output()->output($form);
 
 			return;
