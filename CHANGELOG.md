@@ -1,6 +1,6 @@
 # Changelog
 
-## [x.x.x]
+## [1.1.1]
 - PHPVersionChecker
 
 ## [1.1.0]
