@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.2]
+- Fix onDelete called on move
+
 ## [1.1.1]
 - PHPVersionChecker
 

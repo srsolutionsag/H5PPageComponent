@@ -73,10 +73,12 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @since ILIAS 5.3
 	 */
 	public function onDelete($properties, $plugin_version) {
-		$h5p_content = Content::getContentById($properties["content_id"]);
+		if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
+			$h5p_content = Content::getContentById($properties["content_id"]);
 
-		if ($h5p_content !== NULL) {
-			self::h5p()->show_editor()->deleteContent($h5p_content);
+			if ($h5p_content !== NULL) {
+				self::h5p()->show_editor()->deleteContent($h5p_content);
+			}
 		}
 	}
 
