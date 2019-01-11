@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.2]
+- Fix move and cut/past because bug on ILIAS
+
 ## [1.1.1]
 - PHPVersionChecker
 

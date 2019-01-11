@@ -73,10 +73,16 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @since ILIAS 5.3
 	 */
 	public function onDelete($properties, $plugin_version) {
-		$h5p_content = Content::getContentById($properties["content_id"]);
+		if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
+			if (self::dic()->ctrl()->getCmd() !== "cut") {
+				$h5p_content = Content::getContentById($properties["content_id"]);
 
-		if ($h5p_content !== NULL) {
-			self::h5p()->show_editor()->deleteContent($h5p_content);
+				if ($h5p_content !== NULL) {
+					self::h5p()->show_editor()->deleteContent($h5p_content);
+				}
+			} else {
+				ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $properties["content_id"], true);
+			}
 		}
 	}
 
@@ -88,7 +94,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 	 * @since ILIAS 5.3
 	 */
 	public function onClone(&$properties, $plugin_version) {
-		$h5p_content = Content::getContentById($properties["content_id"]);
+		$old_content_id = $properties["content_id"];
+
+		$h5p_content = Content::getContentById($old_content_id);
 
 		/**
 		 * @var Content $h5p_content_copy
@@ -101,6 +109,12 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 		self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 
 		$properties["content_id"] = $h5p_content_copy->getContentId();
+
+		if (ilSession::get(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $old_content_id)) {
+			ilSession::clear(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $old_content_id);
+
+			$this->onDelete([ "content_id" => $old_content_id ], $plugin_version);
+		}
 	}
 
 
