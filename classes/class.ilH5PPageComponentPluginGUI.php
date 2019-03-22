@@ -1,8 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
-require_once __DIR__ . "/../vendor/autoload.php";
-
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
@@ -171,7 +168,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
-		if ($h5p_content !== NULL) {
+		if ($h5p_content !== null) {
 			return self::h5p()->show_content()->getH5PContent($h5p_content);
 		} else {
 			return self::plugin()->translate("content_not_exists") . "<br>";
