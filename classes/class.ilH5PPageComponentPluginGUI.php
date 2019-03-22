@@ -29,9 +29,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * ilH5PPageComponentPluginGUI constructor
 	 */
 	public function __construct() {
-		if (self::version()->is53()) {
-			parent::__construct();
-		}
+		parent::__construct();
 	}
 
 
