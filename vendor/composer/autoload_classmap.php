@@ -8,9 +8,4 @@ $baseDir = dirname($vendorDir);
 return array(
     'ilH5PPageComponentPlugin' => $baseDir . '/classes/class.ilH5PPageComponentPlugin.php',
     'ilH5PPageComponentPluginGUI' => $baseDir . '/classes/class.ilH5PPageComponentPluginGUI.php',
-    'ilPCPlugged' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPCPlugged.php',
-    'ilPageComponentPlugin' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php',
-    'ilPageComponentPluginGUI' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php',
-    'ilPageObjectFactory' => $baseDir . '/../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php',
-    'srag\\Plugins\\H5PPageComponent\\Job\\PageComponentJob' => $baseDir . '/src/Job/PageComponentJob.php',
 );
