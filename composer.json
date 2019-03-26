@@ -28,11 +28,7 @@
       "srag\\Plugins\\H5PPageComponent\\": "src/"
     },
     "classmap": [
-      "classes/",
-      "../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php",
-      "../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php",
-      "../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php",
-      "../../../../../../../Services/COPage/classes/class.ilPCPlugged.php"
+      "classes/"
     ]
   },
   "config": {
