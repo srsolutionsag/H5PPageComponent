@@ -23,11 +23,6 @@ class ComposerStaticInit0397f6f254f15782af508774289e5343
     public static $classMap = array (
         'ilH5PPageComponentPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPlugin.php',
         'ilH5PPageComponentPluginGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPluginGUI.php',
-        'ilPCPlugged' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPCPlugged.php',
-        'ilPageComponentPlugin' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPlugin.php',
-        'ilPageComponentPluginGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageComponentPluginGUI.php',
-        'ilPageObjectFactory' => __DIR__ . '/../..' . '/../../../../../../../Services/COPage/classes/class.ilPageObjectFactory.php',
-        'srag\\Plugins\\H5PPageComponent\\Job\\PageComponentJob' => __DIR__ . '/../..' . '/src/Job/PageComponentJob.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

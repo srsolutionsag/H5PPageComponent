@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0]
+- Supports ILIAS 5.4
+- Remove ILIAS 5.2 support
+
 ## [1.1.2]
 - Fix move and cut/past because bug on ILIAS
 
