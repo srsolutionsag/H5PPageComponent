@@ -163,7 +163,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
-	    DICStatic::clearCache(); // Workaround fix kearning module override global template
+	    DICStatic::clearCache(); // Workaround fix learning module override global template
 	    
 		$h5p_content = Content::getContentById($a_properties["content_id"]);
 
