@@ -1,5 +1,6 @@
 <?php
 
+use srag\DIC\H5P\DICStatic;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
@@ -162,6 +163,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 * @return string
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
+		// Workaround fix learning module override global template
+		DICStatic::clearCache();
+		self::dic()->dic()->offsetUnset("tpl");
+		self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
+
 		$h5p_content = Content::getContentById($a_properties["content_id"]);
 
 		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
