@@ -164,7 +164,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
 		// Workaround fix learning module override global template
-		DICStatic::clearCache();
 		self::dic()->dic()->offsetUnset("tpl");
 		self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
 

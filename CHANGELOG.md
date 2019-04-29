@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Remove `DICStatic::clearCache();` because replaced by pass by reference in DICTrait
+
 ## [1.2.1]
 - Fix in learning module
 
