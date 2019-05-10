@@ -15,13 +15,9 @@ Update and activate the plugin in the ILIAS Plugin Administration
 ### Some screenshots
 TODO
 
-### Dependencies
+### Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=5.6
-* [composer](https://getcomposer.org)
-* [H5P repository plugin](https://github.com/studer-raimann/H5P)
-
-Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests
