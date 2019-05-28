@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.0]
+- Import/Export contents
+
 ## [1.2.1]
 - Fix in learning module
 

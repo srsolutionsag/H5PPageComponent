@@ -1,9 +1,9 @@
 <?php
 
-use srag\DIC\H5P\DICStatic;
 use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
+use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -22,8 +22,10 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	const CMD_CREATE = "create";
 	const CMD_CREATE_PLUG = "create_plug";
 	const CMD_EDIT = "edit";
+	const CMD_EXPORT = "export";
 	const CMD_INSERT = "insert";
 	const CMD_UPDATE = "update";
+	const PARAM_IMPORT = "h5p_import";
 
 
 	/**
@@ -48,6 +50,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 					case self::CMD_CANCEL:
 					case self::CMD_CREATE;
 					case self::CMD_EDIT:
+					case self::CMD_EXPORT:
 					case self::CMD_INSERT;
 					case self::CMD_UPDATE;
 						$this->{$cmd}();
@@ -68,6 +71,16 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = Content::getContentById($properties["content_id"]);
 
+		if ($h5p_content !== null) {
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("export_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EXPORT)));
+		} else {
+			self::dic()->ctrl()->setParameter($this, self::PARAM_IMPORT, true);
+			self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
+				->translate("import_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_INSERT)));
+			self::dic()->ctrl()->setParameter($this, self::PARAM_IMPORT, null);
+		}
+
 		self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
 		$form = self::h5p()->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
@@ -82,7 +95,13 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function insert() {
-		$this->edit();
+		if ($this->shouldImport()) {
+			$form = $this->getImportContentForm();
+		} else {
+			$form = $this->getEditorForm();
+		}
+
+		self::output()->output($form);
 	}
 
 
@@ -90,7 +109,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 *
 	 */
 	public function create() {
-		$form = $this->getEditorForm();
+		if ($this->shouldImport()) {
+			$form = $this->getImportContentForm();
+		} else {
+			$form = $this->getEditorForm();
+		}
 
 		if (!$form->storeForm()) {
 			self::output()->output($form);
@@ -98,7 +121,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 			return;
 		}
 
-		$h5p_content = self::h5p()->show_editor()->createContent($form);
+		if ($this->shouldImport()) {
+			$h5p_content = self::h5p()->show_editor()->importContent($form);
+		} else {
+			$h5p_content = self::h5p()->show_editor()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
+		}
 
 		$h5p_content->setParentType(Content::PARENT_TYPE_PAGE);
 		$h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
@@ -139,11 +166,34 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		$properties = $this->getProperties();
 		$h5p_content = Content::getContentById($properties["content_id"]);
 
-		self::h5p()->show_editor()->updateContent($h5p_content, $form);
+		self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
 		$this->updateElement($properties);
 
 		$this->returnToParent();
+	}
+
+
+	/**
+	 * @return ImportContentFormGUI
+	 */
+	protected function getImportContentForm() {
+		self::dic()->ctrl()->saveParameter($this, self::PARAM_IMPORT);
+
+		$form = self::h5p()->show_editor()->getImportContentForm($this, self::CMD_CREATE, self::CMD_CANCEL);
+
+		return $form;
+	}
+
+
+	/**
+	 *
+	 */
+	public function export() {
+		$properties = $this->getProperties();
+		$h5p_content = Content::getContentById($properties["content_id"]);
+
+		self::h5p()->show_editor()->exportContent($h5p_content);
 	}
 
 
@@ -164,7 +214,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version) {
 		// Workaround fix learning module override global template
-		DICStatic::clearCache();
 		self::dic()->dic()->offsetUnset("tpl");
 		self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
 
@@ -177,5 +226,13 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 		} else {
 			return self::plugin()->translate("content_not_exists") . "<br>";
 		}
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	protected function shouldImport() {
+		return boolval(filter_input(INPUT_GET, self::PARAM_IMPORT));
 	}
 }
