@@ -1,3 +1,5 @@
+This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
+
 ## Installation
 
 First install and enable [H5P repository plugin](https://github.com/studer-raimann/H5P).
