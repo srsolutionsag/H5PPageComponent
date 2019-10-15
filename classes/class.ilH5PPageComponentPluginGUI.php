@@ -48,11 +48,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI {
 
 				switch ($cmd) {
 					case self::CMD_CANCEL:
-					case self::CMD_CREATE;
+                    case self::CMD_CREATE:
 					case self::CMD_EDIT:
 					case self::CMD_EXPORT:
-					case self::CMD_INSERT;
-					case self::CMD_UPDATE;
+                    case self::CMD_INSERT:
+                    case self::CMD_UPDATE:
 						$this->{$cmd}();
 						break;
 
