@@ -5,7 +5,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Utils\H5PTrait;
-use srag\RemovePluginDataConfirm\H5P\PluginUninstallTrait;
 
 /**
  * Class ilH5PPageComponentPlugin
@@ -14,13 +13,10 @@ use srag\RemovePluginDataConfirm\H5P\PluginUninstallTrait;
  */
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
-	use PluginUninstallTrait;
 	use H5PTrait;
 	const PLUGIN_ID = "pchfp";
 	const PLUGIN_NAME = "H5PPageComponent";
 	const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-	const REMOVE_PLUGIN_DATA_CONFIRM = false;
-	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = H5PRemoveDataConfirm::class;
 	/**
 	 * @var self|null
 	 */
@@ -115,13 +111,5 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin {
 
 			$this->onDelete([ "content_id" => $old_content_id ], $plugin_version);
 		}
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	protected function deleteData()/*: void*/ {
-		// Nothing to delete
 	}
 }
