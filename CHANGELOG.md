@@ -1,7 +1,7 @@
 # Changelog
 
 ## [1.3.1]
-- Fix
+- Some improvments
 
 ## [1.3.0]
 - Import/Export contents
