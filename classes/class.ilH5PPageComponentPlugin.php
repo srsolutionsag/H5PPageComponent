@@ -101,13 +101,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
         $h5p_content = Content::getContentById($old_content_id);
 
-        /**
-         * @var Content $h5p_content_copy
-         */
+        $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
 
-        $h5p_content_copy = $h5p_content->copy();
-
-        $h5p_content_copy->store();
+        self::h5p()->contents()->storeContent($h5p_content_copy);
 
         self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 

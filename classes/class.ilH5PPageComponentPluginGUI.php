@@ -74,7 +74,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function getEditorForm()
     {
         $properties = $this->getProperties();
-        $h5p_content = Content::getContentById($properties["content_id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
         if ($h5p_content !== null) {
             self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
@@ -88,7 +88,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
         self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
-        $form = self::h5p()->show_editor()->getEditorForm($h5p_content, $this, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
+        $form = self::h5p()->contents()->editor()->factory()->newEditContentFormInstance($this, $h5p_content, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
         //self::addCreationButton($form);
 
@@ -137,7 +137,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $h5p_content->setParentType(Content::PARENT_TYPE_PAGE);
         $h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
 
-        $h5p_content->store();
+        self::h5p()->contents()->storeContent($h5p_content);
 
         $properties = [
             "content_id" => $h5p_content->getContentId()
@@ -173,7 +173,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         }
 
         $properties = $this->getProperties();
-        $h5p_content = Content::getContentById($properties["content_id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
         self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
@@ -190,7 +190,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     {
         self::dic()->ctrl()->saveParameter($this, self::PARAM_IMPORT);
 
-        $form = self::h5p()->show_editor()->getImportContentForm($this, self::CMD_CREATE, self::CMD_CANCEL);
+        $form = self::h5p()->contents()->editor()->factory()->newImportContentFormInstance($this, self::CMD_CREATE, self::CMD_CANCEL);
 
         return $form;
     }
@@ -202,7 +202,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     public function export()
     {
         $properties = $this->getProperties();
-        $h5p_content = Content::getContentById($properties["content_id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
         self::h5p()->show_editor()->exportContent($h5p_content);
     }
@@ -230,7 +230,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         self::dic()->dic()->offsetUnset("tpl");
         self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
 
-        $h5p_content = Content::getContentById($a_properties["content_id"]);
+        $h5p_content = self::h5p()->contents()->getContentById($a_properties["content_id"]);
 
         self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
