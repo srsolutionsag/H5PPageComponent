@@ -129,9 +129,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         }
 
         if ($this->shouldImport()) {
-            $h5p_content = self::h5p()->show_editor()->importContent($form);
+            $h5p_content = self::h5p()->contents()->editor()->show()->importContent($form);
         } else {
-            $h5p_content = self::h5p()->show_editor()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
+            $h5p_content = self::h5p()->contents()->editor()->show()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
         }
 
         $h5p_content->setParentType(Content::PARENT_TYPE_PAGE);
@@ -175,7 +175,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $properties = $this->getProperties();
         $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
-        self::h5p()->show_editor()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
 
         $this->updateElement($properties);
 
@@ -204,7 +204,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $properties = $this->getProperties();
         $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
-        self::h5p()->show_editor()->exportContent($h5p_content);
+        self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
     }
 
 
@@ -235,7 +235,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
         if ($h5p_content !== null) {
-            return self::h5p()->show_content()->getH5PContent($h5p_content);
+            return self::h5p()->contents()->show()->getH5PContent($h5p_content);
         } else {
             return self::plugin()->translate("content_not_exists") . "<br>";
         }
