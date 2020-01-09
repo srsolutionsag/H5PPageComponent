@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\Plugins\H5P\Content\Content;
+use srag\DIC\H5P\DICTrait;
 use srag\Plugins\H5P\Utils\H5PTrait;
 
 /**
@@ -14,6 +14,7 @@ use srag\Plugins\H5P\Utils\H5PTrait;
 class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 {
 
+    use DICTrait;
     use H5PTrait;
     const PLUGIN_ID = "pchfp";
     const PLUGIN_NAME = "H5PPageComponent";
@@ -77,10 +78,10 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     {
         if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
             if (self::dic()->ctrl()->getCmd() !== "cut") {
-                $h5p_content = Content::getContentById($properties["content_id"]);
+                $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
 
                 if ($h5p_content !== null) {
-                    self::h5p()->show_editor()->deleteContent($h5p_content);
+                    self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
                 }
             } else {
                 ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $properties["content_id"], true);
@@ -99,13 +100,13 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     {
         $old_content_id = $properties["content_id"];
 
-        $h5p_content = Content::getContentById($old_content_id);
+        $h5p_content = self::h5p()->contents()->getContentById($old_content_id);
 
         $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
 
         self::h5p()->contents()->storeContent($h5p_content_copy);
 
-        self::h5p()->storage()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+        self::h5p()->contents()->editor()->storageCore()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
 
         $properties["content_id"] = $h5p_content_copy->getContentId();
 
