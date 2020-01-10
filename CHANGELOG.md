@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.2]
+- Some improvments
+
 ## [1.3.1]
 - Some improvments
 
