@@ -28,7 +28,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance()/*:self*/
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -48,20 +48,18 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getPluginName()
+    public function getPluginName()/*:string*/
     {
         return self::PLUGIN_NAME;
     }
 
 
     /**
-     * @param string $a_type
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function isValidParentType($a_type)
+    public function isValidParentType(/*string*/ $a_type)/*:bool*/
     {
         // Allow in all parent types
         return true;
@@ -69,12 +67,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
 
     /**
-     * @param array  $properties
-     * @param string $plugin_version
-     *
-     * @since ILIAS 5.3
+     * @inheritDoc
      */
-    public function onDelete($properties, $plugin_version)
+    public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
     {
         if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
             if (self::dic()->ctrl()->getCmd() !== "cut") {
@@ -91,12 +86,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
 
     /**
-     * @param array  $properties
-     * @param string $plugin_version
-     *
-     * @since ILIAS 5.3
+     * @inheritDoc
      */
-    public function onClone(&$properties, $plugin_version)
+    public function onClone(/*array*/ &$properties, /*string*/ $plugin_version)/*: void*/
     {
         $old_content_id = $properties["content_id"];
 

@@ -40,9 +40,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function executeCommand()
+    public function executeCommand()/*:void*/
     {
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
@@ -71,7 +71,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      * @return EditContentFormGUI
      */
-    protected function getEditorForm()
+    protected function getEditorForm()/*:EditContentFormGUI*/
     {
         $properties = $this->getProperties();
         $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
@@ -97,9 +97,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function insert()
+    public function insert()/*:void*/
     {
         if ($this->shouldImport()) {
             $form = $this->getImportContentForm();
@@ -112,9 +112,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function create()
+    public function create()/*:void*/
     {
         if ($this->shouldImport()) {
             $form = $this->getImportContentForm();
@@ -149,9 +149,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
 
     /**
-     *
+     * @inheritDoc
      */
-    public function edit()
+    public function edit()/*:void*/
     {
         $form = $this->getEditorForm();
 
@@ -162,7 +162,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      *
      */
-    public function update()
+    public function update()/*:void*/
     {
         $form = $this->getEditorForm();
 
@@ -186,7 +186,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      * @return ImportContentFormGUI
      */
-    protected function getImportContentForm()
+    protected function getImportContentForm()/*:ImportContentFormGUI*/
     {
         self::dic()->ctrl()->saveParameter($this, self::PARAM_IMPORT);
 
@@ -199,7 +199,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      *
      */
-    public function export()
+    public function export()/*:void*/
     {
         $properties = $this->getProperties();
         $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
@@ -211,20 +211,16 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      *
      */
-    public function cancel()
+    public function cancel()/*:void*/
     {
         $this->returnToParent();
     }
 
 
     /**
-     * @param string $a_mode
-     * @param array  $a_properties
-     * @param string $plugin_version
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getElementHTML($a_mode, array $a_properties, $plugin_version)
+    public function getElementHTML(/*string*/ $a_mode, array $a_properties, /*string*/ $plugin_version)/* : string*/
     {
         // Workaround fix learning module override global template
         self::dic()->dic()->offsetUnset("tpl");
@@ -245,7 +241,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      * @return bool
      */
-    protected function shouldImport()
+    protected function shouldImport()/*:bool*/
     {
         return boolval(filter_input(INPUT_GET, self::PARAM_IMPORT));
     }
