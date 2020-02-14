@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.4]
+- Improve import content
+
 ## [1.3.3]
 - Fixes
 
