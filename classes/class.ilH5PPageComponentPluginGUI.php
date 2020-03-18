@@ -1,7 +1,6 @@
 <?php
 
 use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Action\H5PActionGUI;
 use srag\Plugins\H5P\Content\Content;
 use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
 use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
@@ -85,8 +84,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
                 ->translate("import_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_INSERT)));
             self::dic()->ctrl()->setParameter($this, self::PARAM_IMPORT, null);
         }
-
-        self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
         $form = self::h5p()->contents()->editor()->factory()->newEditContentFormInstance($this, $h5p_content, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
 
@@ -233,8 +230,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
 
         $h5p_content = self::h5p()->contents()->getContentById($a_properties["content_id"]);
-
-        self::dic()->ctrl()->setParameterByClass(H5PActionGUI::class, "ref_id", filter_input(INPUT_GET, "ref_id")); // Fix async url
 
         if ($h5p_content !== null) {
             return self::h5p()->contents()->show()->getH5PContent($h5p_content);

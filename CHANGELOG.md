@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.5]
+- Fix working in portfolio pages
+
 ## [1.3.4]
 - Improve import content
 
