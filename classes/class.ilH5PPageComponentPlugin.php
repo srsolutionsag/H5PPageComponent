@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\DIC\H5P\DICTrait;
@@ -16,6 +15,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_ID = "pchfp";
     const PLUGIN_NAME = "H5PPageComponent";
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;

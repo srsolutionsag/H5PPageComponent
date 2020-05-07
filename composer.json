@@ -29,6 +29,9 @@
     },
     "classmap": [
       "classes/"
+    ],
+    "files": [
+      "../../../Repository/RepositoryObject/H5P/vendor/autoload.php"
     ]
   },
   "config": {

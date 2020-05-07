@@ -18,6 +18,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
     use DICTrait;
     use H5PTrait;
+
     const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const CMD_CANCEL = "cancel";
     const CMD_CREATE = "create";
