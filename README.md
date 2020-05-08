@@ -11,7 +11,6 @@ See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
 First install and enable [H5P Plugin](https://github.com/studer-raimann/H5P).
 
 ### Install H5PPageComponent Plugin
-
 Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/COPage/PageComponent
