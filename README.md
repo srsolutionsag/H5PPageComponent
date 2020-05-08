@@ -1,4 +1,4 @@
-# H5PPageComponent
+# H5PPageComponent ILIAS Plugin
 
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 

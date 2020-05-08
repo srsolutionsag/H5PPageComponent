@@ -1,1 +1,1 @@
-## H5PPageComponent Description
+# H5PPageComponent ILIAS Plugin Description
