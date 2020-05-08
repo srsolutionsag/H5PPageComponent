@@ -1,10 +1,16 @@
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 
+## Description
+See in [doc/DESCRIPTION.md](./doc/DESCRIPTION.md)
+
+## Documentation
+See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
+
 ## Installation
 
-First install and enable [H5P repository plugin](https://github.com/studer-raimann/H5P).
+First install and enable [H5P Plugin](https://github.com/studer-raimann/H5P).
 
-### Install H5P page component plugin
+### Install H5PPageComponent Plugin
 
 Start at your ILIAS root directory
 ```bash
@@ -13,9 +19,6 @@ cd Customizing/global/plugins/Services/COPage/PageComponent
 git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponent
 ```
 Update and activate the plugin in the ILIAS Plugin Administration
-
-### Some screenshots
-TODO
 
 ### Requirements
 * ILIAS 5.3 or ILIAS 5.4
