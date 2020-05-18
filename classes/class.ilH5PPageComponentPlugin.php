@@ -28,7 +28,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @return self
      */
-    public static function getInstance()/*:self*/
+    public static function getInstance() : self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -50,7 +50,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @inheritDoc
      */
-    public function getPluginName()/*:string*/
+    public function getPluginName() : string
     {
         return self::PLUGIN_NAME;
     }
@@ -59,7 +59,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @inheritDoc
      */
-    public function isValidParentType(/*string*/ $a_type)/*:bool*/
+    public function isValidParentType(/*string*/ $a_type) : bool
     {
         // Allow in all parent types
         return true;
@@ -73,13 +73,13 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     {
         if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
             if (self::dic()->ctrl()->getCmd() !== "cut") {
-                $h5p_content = self::h5p()->contents()->getContentById($properties["content_id"]);
+                $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
 
                 if ($h5p_content !== null) {
                     self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
                 }
             } else {
-                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $properties["content_id"], true);
+                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . intval($properties["content_id"]), true);
             }
         }
     }
@@ -90,9 +90,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
      */
     public function onClone(/*array*/ &$properties, /*string*/ $plugin_version)/*: void*/
     {
-        $old_content_id = $properties["content_id"];
+        $old_content_id = intval($properties["content_id"]);
 
-        $h5p_content = self::h5p()->contents()->getContentById($old_content_id);
+        $h5p_content = self::h5p()->contents()->getContentById(intval($old_content_id));
 
         $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
 

@@ -20,8 +20,8 @@ git clone https://github.com/studer-raimann/H5PPageComponent.git H5PPageComponen
 Update and activate the plugin in the ILIAS Plugin Administration
 
 ## Requirements
-* ILIAS 5.3 or ILIAS 5.4
-* PHP >=5.6
+* ILIAS 5.4 or ILIAS 6
+* PHP >=7.0
 
 ## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P
