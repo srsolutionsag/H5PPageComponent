@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.4.0]
+- ILIAS 6 support
+- Min. PHP 7.0
+- Remove ILIAS 5.3 support
+
 ## [1.3.5]
 - Fix working in portfolio pages
 
