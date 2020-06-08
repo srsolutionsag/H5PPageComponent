@@ -1,6 +1,12 @@
 {
   "name": "srag/plugins/h5ppagecomponent",
   "description": "",
+  "version": "1.4.0",
+  "ilias_plugin": {
+    "id": "pchfp",
+    "ilias_min_version": "5.4.0",
+    "ilias_max_version": "6.999"
+  },
   "type": "project",
   "keywords": [
     "ILIAS",
@@ -21,7 +27,8 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P"
   },
   "require": {
-    "php": ">=7.0"
+    "php": ">=7.0",
+    "srag/librariesnamespacechanger": ">=0.1.0"
   },
   "autoload": {
     "psr-4": {
@@ -38,5 +45,12 @@
     "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "scripts": {
+    "pre-autoload-dump": [
+      "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
+      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
+      "srag\\LibrariesNamespaceChanger\\GeneratePluginPhp::generatePluginPhp"
+    ]
   }
 }
