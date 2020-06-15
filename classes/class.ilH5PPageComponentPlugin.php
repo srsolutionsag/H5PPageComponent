@@ -16,13 +16,22 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     use DICTrait;
     use H5PTrait;
 
+    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     const PLUGIN_ID = "pchfp";
     const PLUGIN_NAME = "H5PPageComponent";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
     /**
      * @var self|null
      */
     protected static $instance = null;
+
+
+    /**
+     * ilH5PPageComponentPlugin constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
 
     /**
@@ -35,15 +44,6 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * ilH5PPageComponentPlugin constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
     }
 
 
@@ -69,25 +69,6 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @inheritDoc
      */
-    public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
-    {
-        if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
-            if (self::dic()->ctrl()->getCmd() !== "cut") {
-                $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
-
-                if ($h5p_content !== null) {
-                    self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
-                }
-            } else {
-                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . intval($properties["content_id"]), true);
-            }
-        }
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function onClone(/*array*/ &$properties, /*string*/ $plugin_version)/*: void*/
     {
         $old_content_id = intval($properties["content_id"]);
@@ -106,6 +87,25 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
             ilSession::clear(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $old_content_id);
 
             $this->onDelete(["content_id" => $old_content_id], $plugin_version);
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
+    {
+        if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
+            if (self::dic()->ctrl()->getCmd() !== "cut") {
+                $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
+
+                if ($h5p_content !== null) {
+                    self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
+                }
+            } else {
+                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . intval($properties["content_id"]), true);
+            }
         }
     }
 }
