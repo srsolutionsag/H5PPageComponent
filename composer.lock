@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "v0.9.3",
+            "version": "v0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "f1d8d9ce97723b1bc5850dcbb2031bca38fe6030"
+                "reference": "35efb3557ea2d58ae3ea6133c2d89b3e41cc8564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/f1d8d9ce97723b1bc5850dcbb2031bca38fe6030",
-                "reference": "f1d8d9ce97723b1bc5850dcbb2031bca38fe6030",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/35efb3557ea2d58ae3ea6133c2d89b3e41cc8564",
+                "reference": "35efb3557ea2d58ae3ea6133c2d89b3e41cc8564",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-06-09T10:27:35+00:00"
+            "time": "2020-08-05T09:26:53+00:00"
         }
     ],
     "packages-dev": [],
