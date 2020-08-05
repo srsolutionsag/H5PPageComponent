@@ -4,6 +4,7 @@
   "version": "1.4.0",
   "ilias_plugin": {
     "id": "pchfp",
+    "name": "H5PPageComponent",
     "ilias_min_version": "5.4.0",
     "ilias_max_version": "6.999",
     "slot": "Services/COPage/PageComponent"
