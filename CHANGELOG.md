@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.4.1]
+- Fixes
+
 ## [1.4.0]
 - ILIAS 6 support
 - Min. PHP 7.0
