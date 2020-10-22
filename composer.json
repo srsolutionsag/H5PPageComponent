@@ -2,12 +2,14 @@
   "name": "srag/plugins/h5ppagecomponent",
   "description": "",
   "version": "1.4.1",
-  "ilias_plugin": {
-    "id": "pchfp",
-    "name": "H5PPageComponent",
-    "ilias_min_version": "5.4.0",
-    "ilias_max_version": "6.999",
-    "slot": "Services/COPage/PageComponent"
+  "extra": {
+    "ilias_plugin": {
+      "id": "pchfp",
+      "name": "H5PPageComponent",
+      "ilias_min_version": "5.4.0",
+      "ilias_max_version": "6.999",
+      "slot": "Services/COPage/PageComponent"
+    }
   },
   "type": "project",
   "keywords": [
@@ -53,7 +55,7 @@
       "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
       "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
       "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
-      "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
+      "srag\\LibrariesNamespaceChanger\\GeneratePluginReadme::generatePluginReadme"
     ]
   }
 }

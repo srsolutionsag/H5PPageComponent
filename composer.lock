@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0904e839bd62e05bd745dd9428dc009",
+    "content-hash": "5bca3bbb0d6f24018ff5c894f67887ab",
     "packages": [
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.11.2",
+            "version": "0.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "bdb217950c262ab9110c18794241351dac7f4447"
+                "reference": "2e8e968888aef1fc9cb0480c61f87180a6ec5f38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/bdb217950c262ab9110c18794241351dac7f4447",
-                "reference": "bdb217950c262ab9110c18794241351dac7f4447",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/2e8e968888aef1fc9cb0480c61f87180a6ec5f38",
+                "reference": "2e8e968888aef1fc9cb0480c61f87180a6ec5f38",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2020-09-21T06:20:37+00:00"
+            "time": "2020-10-22T12:53:54+00:00"
         }
     ],
     "packages-dev": [],
