@@ -8,6 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'ilH5PPageComponentPlugin' => $baseDir . '/classes/class.ilH5PPageComponentPlugin.php',
     'ilH5PPageComponentPluginGUI' => $baseDir . '/classes/class.ilH5PPageComponentPluginGUI.php',
+    'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginPhpAndXml' => $vendorDir . '/srag/generateplugininfoshelper/src/GeneratePluginPhpAndXml.php',
+    'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginReadme' => $vendorDir . '/srag/generateplugininfoshelper/src/GeneratePluginReadme.php',
+    'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\UpdatePluginReadme' => $vendorDir . '/srag/generateplugininfoshelper/src/UpdatePluginReadme.php',
     'srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml' => $vendorDir . '/srag/librariesnamespacechanger/src/GeneratePluginPhpAndXml.php',
     'srag\\LibrariesNamespaceChanger\\GeneratePluginReadme' => $vendorDir . '/srag/librariesnamespacechanger/src/GeneratePluginReadme.php',
     'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => $vendorDir . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',

@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'srag\\Plugins\\H5PPageComponent\\' => array($baseDir . '/src'),
     'srag\\LibrariesNamespaceChanger\\' => array($vendorDir . '/srag/librariesnamespacechanger/src'),
+    'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\' => array($vendorDir . '/srag/generateplugininfoshelper/src'),
 );

@@ -15,6 +15,7 @@ class ComposerStaticInit0397f6f254f15782af508774289e5343
         array (
             'srag\\Plugins\\H5PPageComponent\\' => 30,
             'srag\\LibrariesNamespaceChanger\\' => 31,
+            'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\' => 48,
         ),
     );
 
@@ -27,11 +28,18 @@ class ComposerStaticInit0397f6f254f15782af508774289e5343
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
+        'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src',
+        ),
     );
 
     public static $classMap = array (
         'ilH5PPageComponentPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPlugin.php',
         'ilH5PPageComponentPluginGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPluginGUI.php',
+        'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginPhpAndXml' => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src/GeneratePluginPhpAndXml.php',
+        'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginReadme' => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src/GeneratePluginReadme.php',
+        'srag\\GeneratePluginInfosHelper\\H5PPageComponent\\UpdatePluginReadme' => __DIR__ . '/..' . '/srag/generateplugininfoshelper/src/UpdatePluginReadme.php',
         'srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/GeneratePluginPhpAndXml.php',
         'srag\\LibrariesNamespaceChanger\\GeneratePluginReadme' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/GeneratePluginReadme.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
