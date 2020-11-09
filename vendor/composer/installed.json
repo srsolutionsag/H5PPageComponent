@@ -1,24 +1,27 @@
 [
     {
         "name": "srag/generateplugininfoshelper",
-        "version": "2.0.0",
-        "version_normalized": "2.0.0.0",
+        "version": "2.3.2",
+        "version_normalized": "2.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-            "reference": "5898746c4fd04b74083f127ad81b57ee3416ca3b"
+            "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/5898746c4fd04b74083f127ad81b57ee3416ca3b",
-            "reference": "5898746c4fd04b74083f127ad81b57ee3416ca3b",
+            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/5de665d2803355843ffb44d8c66d96b049ec1edd",
+            "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-11-09T06:58:35+00:00",
+        "time": "2020-11-09T13:17:14+00:00",
         "type": "library",
+        "extra": {
+            "generate_plugin_readme_template": "SRAG_LIBRARY"
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -48,24 +51,30 @@
     },
     {
         "name": "srag/librariesnamespacechanger",
-        "version": "0.13.0",
-        "version_normalized": "0.13.0.0",
+        "version": "0.14.1",
+        "version_normalized": "0.14.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d"
+            "reference": "814a2542d5d5c1a66a44b5eb73b07dec64f71dd8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d",
-            "reference": "f9db6f32aac4962cc4bee0742805e2f6b4ff4f9d",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/814a2542d5d5c1a66a44b5eb73b07dec64f71dd8",
+            "reference": "814a2542d5d5c1a66a44b5eb73b07dec64f71dd8",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-11-09T07:19:37+00:00",
+        "require-dev": {
+            "srag/generateplugininfoshelper": ">=0.1.0"
+        },
+        "time": "2020-11-09T13:34:04+00:00",
         "type": "library",
+        "extra": {
+            "generate_plugin_readme_template": "SRAG_LIBRARY"
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
