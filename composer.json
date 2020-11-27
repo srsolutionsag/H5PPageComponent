@@ -1,7 +1,7 @@
 {
   "name": "srag/h5ppagecomponent",
-  "description": "",
-  "version": "1.4.1",
+  "description": "Add H5P contents in page component editor",
+  "version": "1.4.2",
   "extra": {
     "ilias_plugin": {
       "id": "pchfp",
