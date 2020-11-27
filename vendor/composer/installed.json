@@ -1,24 +1,80 @@
 [
     {
-        "name": "srag/librariesnamespacechanger",
-        "version": "v0.10.4",
-        "version_normalized": "0.10.4.0",
+        "name": "srag/generateplugininfoshelper",
+        "version": "2.4.5",
+        "version_normalized": "2.4.5.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f"
+            "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
+            "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf71c18cd46491444f1bd3daefb0aace41bc790f",
-            "reference": "cf71c18cd46491444f1bd3daefb0aace41bc790f",
+            "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/cb928c61cd60d1d62afe71c368bfed06833bfa85",
+            "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2020-09-11T10:39:59+00:00",
+        "time": "2020-11-12T14:15:19+00:00",
         "type": "library",
+        "extra": {
+            "generate_plugin_readme_template": "SRAG_LIBRARY"
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "srag\\GeneratePluginInfosHelper\\H5PPageComponent\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-only"
+        ],
+        "authors": [
+            {
+                "name": "studer + raimann ag - Team Custom 1",
+                "email": "support-custom1@studer-raimann.ch",
+                "homepage": "https://studer-raimann.ch",
+                "role": "Developer"
+            }
+        ],
+        "description": "Generate plugin infos helper",
+        "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
+        "keywords": [
+            "Infos",
+            "generate",
+            "helper",
+            "plugin"
+        ]
+    },
+    {
+        "name": "srag/librariesnamespacechanger",
+        "version": "0.14.2",
+        "version_normalized": "0.14.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
+            "reference": "196916a264362f10fe508f718c5e939955678c5a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/196916a264362f10fe508f718c5e939955678c5a",
+            "reference": "196916a264362f10fe508f718c5e939955678c5a",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "require-dev": {
+            "srag/generateplugininfoshelper": ">=0.1.0"
+        },
+        "time": "2020-11-13T09:54:27+00:00",
+        "type": "library",
+        "extra": {
+            "generate_plugin_readme_template": "SRAG_LIBRARY"
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -40,8 +96,9 @@
         "description": "Change namespace of libraries to plugin namespace",
         "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
         "keywords": [
-            "ILIAS",
-            "libraries"
+            "changer",
+            "libraries",
+            "namespace"
         ]
     }
 ]

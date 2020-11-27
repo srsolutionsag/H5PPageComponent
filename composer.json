@@ -1,13 +1,16 @@
 {
-  "name": "srag/plugins/h5ppagecomponent",
-  "description": "",
-  "version": "1.4.1",
-  "ilias_plugin": {
-    "id": "pchfp",
-    "name": "H5PPageComponent",
-    "ilias_min_version": "5.4.0",
-    "ilias_max_version": "6.999",
-    "slot": "Services/COPage/PageComponent"
+  "name": "srag/h5ppagecomponent",
+  "description": "Add H5P contents in page component editor",
+  "version": "1.4.2",
+  "extra": {
+    "ilias_plugin": {
+      "id": "pchfp",
+      "name": "H5PPageComponent",
+      "ilias_min_version": "5.4.0",
+      "ilias_max_version": "6.999",
+      "slot": "Services/COPage/PageComponent"
+    },
+    "generate_plugin_readme_template": "SRAG_ILIAS_PLUGIN"
   },
   "type": "project",
   "keywords": [
@@ -30,6 +33,7 @@
   },
   "require": {
     "php": ">=7.0",
+    "srag/generateplugininfoshelper": ">=0.1.0",
     "srag/librariesnamespacechanger": ">=0.1.0"
   },
   "autoload": {
@@ -52,8 +56,8 @@
     "pre-autoload-dump": [
       "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
       "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport",
-      "srag\\LibrariesNamespaceChanger\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
-      "srag\\LibrariesNamespaceChanger\\UpdatePluginReadme::updatePluginReadme"
+      "srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginPhpAndXml::generatePluginPhpAndXml",
+      "srag\\GeneratePluginInfosHelper\\H5PPageComponent\\GeneratePluginReadme::generatePluginReadme"
     ]
   }
 }
