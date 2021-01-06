@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35f53aef34aa10e5201ba16bddc51b5d",
+    "content-hash": "e466392ed93e33482c6a24f8e22c97bc",
     "packages": [
         {
             "name": "srag/generateplugininfoshelper",
-            "version": "2.4.5",
+            "version": "2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85"
+                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/cb928c61cd60d1d62afe71c368bfed06833bfa85",
-                "reference": "cb928c61cd60d1d62afe71c368bfed06833bfa85",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/c27b765782c9533f6f6f67e2b1a705f52df377a1",
+                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Generate plugin infos helper",
+            "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
             "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
             "keywords": [
                 "Infos",
@@ -52,7 +52,7 @@
                 "helper",
                 "plugin"
             ],
-            "time": "2020-11-12T14:15:19+00:00"
+            "time": "2020-11-30T14:15:16+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",

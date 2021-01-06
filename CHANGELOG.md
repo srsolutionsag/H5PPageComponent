@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.0]
+- Changes for latest H5P repository plugin
+
 ## [1.4.2]
 - Update readme
 
