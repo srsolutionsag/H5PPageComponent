@@ -68,7 +68,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         if ($this->shouldImport()) {
             $h5p_content = self::h5p()->contents()->editor()->show()->importContent($form);
         } else {
-            $h5p_content = self::h5p()->contents()->editor()->show()->createContent($form->getH5PTitle(), $form->getLibrary(), $form->getParams(), $form);
+            $h5p_content = self::h5p()->contents()->editor()->show()->createContent($form->getLibrary(), $form->getParams(), $form);
         }
 
         if (!$h5p_content) {
@@ -193,7 +193,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $properties = $this->getProperties();
         $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
 
-        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getH5PTitle(), $form->getParams(), $form);
+        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getParams(), $form);
 
         $this->updateElement($properties);
 
