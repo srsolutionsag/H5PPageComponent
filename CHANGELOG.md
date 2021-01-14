@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.1]
+- Update keywords
+
 ## [1.5.0]
 - Changes for latest H5P repository plugin
 
