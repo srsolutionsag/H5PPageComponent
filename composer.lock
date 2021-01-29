@@ -30,7 +30,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\": "src/"
+                    "srag\\GeneratePluginInfosHelper\\H5PPageComponent\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
