@@ -4,68 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e466392ed93e33482c6a24f8e22c97bc",
+    "content-hash": "3dab0d61c005c9693151ee1015544225",
     "packages": [
         {
-            "name": "srag/generateplugininfoshelper",
-            "version": "2.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/c27b765782c9533f6f6f67e2b1a705f52df377a1",
-                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY"
-            },
-            "autoload": {
-                "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "studer + raimann ag - Team Custom 1",
-                    "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
-            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
-            "keywords": [
-                "Infos",
-                "generate",
-                "helper",
-                "plugin"
-            ],
-            "time": "2020-11-30T14:15:16+00:00"
-        },
-        {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.14.2",
+            "version": "0.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "196916a264362f10fe508f718c5e939955678c5a"
+                "reference": "37b73f814b319a9a05664df994423c412e2b52f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/196916a264362f10fe508f718c5e939955678c5a",
-                "reference": "196916a264362f10fe508f718c5e939955678c5a",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/37b73f814b319a9a05664df994423c412e2b52f3",
+                "reference": "37b73f814b319a9a05664df994423c412e2b52f3",
                 "shasum": ""
             },
             "require": {
@@ -76,7 +28,8 @@
             },
             "type": "library",
             "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY"
+                "generate_plugin_readme_template": "SRAG_LIBRARY",
+                "long_description_template": "src/LONG_DESCRIPTION.md"
             },
             "autoload": {
                 "psr-4": {
@@ -102,7 +55,7 @@
                 "libraries",
                 "namespace"
             ],
-            "time": "2020-11-13T09:54:27+00:00"
+            "time": "2021-01-25T06:48:05+00:00"
         }
     ],
     "packages-dev": [],

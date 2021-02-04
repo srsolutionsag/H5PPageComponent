@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.2]
+- Remove generate readme and auto_version_tag_ci
+
 ## [1.5.1]
 - Update keywords
 
