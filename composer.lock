@@ -4,57 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a98d1dc5434d269bce0c5c2647edbaa8",
+    "content-hash": "3dab0d61c005c9693151ee1015544225",
     "packages": [
-        {
-            "name": "srag/generateplugininfoshelper",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY",
-                "long_description_template": "src/LONG_DESCRIPTION.md"
-            },
-            "autoload": {
-                "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\H5PPageComponent\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "studer + raimann ag - Team Custom 1",
-                    "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
-            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
-            "keywords": [
-                "Infos",
-                "generate",
-                "helper",
-                "plugin"
-            ],
-            "time": "2021-01-25T06:24:01+00:00"
-        },
         {
             "name": "srag/librariesnamespacechanger",
             "version": "0.15.0",
