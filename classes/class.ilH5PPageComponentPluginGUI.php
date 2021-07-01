@@ -157,7 +157,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $h5p_content = self::h5p()->contents()->getContentById(intval($a_properties["content_id"]));
 
         if ($h5p_content !== null) {
-            return self::h5p()->contents()->show()->getH5PContent($h5p_content);
+            return self::h5p()->contents()->show()->getH5PContent($h5p_content, true, ('edit' === $a_mode));
         } else {
             return self::plugin()->translate("content_not_exists") . "<br>";
         }
