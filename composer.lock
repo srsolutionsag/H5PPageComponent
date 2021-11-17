@@ -8,29 +8,25 @@
     "packages": [
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.15.0",
+            "version": "0.16.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-                "reference": "37b73f814b319a9a05664df994423c412e2b52f3"
+                "url": "https://github.com/fluxapps/LibrariesNamespaceChanger.git",
+                "reference": "186c543c88544ecf3907767e1645d4faf37dede0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/37b73f814b319a9a05664df994423c412e2b52f3",
-                "reference": "37b73f814b319a9a05664df994423c412e2b52f3",
+                "url": "https://api.github.com/repos/fluxapps/LibrariesNamespaceChanger/zipball/186c543c88544ecf3907767e1645d4faf37dede0",
+                "reference": "186c543c88544ecf3907767e1645d4faf37dede0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "require-dev": {
                 "srag/generateplugininfoshelper": ">=0.1.0"
             },
             "type": "library",
-            "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY",
-                "long_description_template": "src/LONG_DESCRIPTION.md"
-            },
             "autoload": {
                 "psr-4": {
                     "srag\\LibrariesNamespaceChanger\\": "src/"
@@ -42,20 +38,20 @@
             ],
             "authors": [
                 {
-                    "name": "studer + raimann ag - Team Custom 1",
-                    "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch",
+                    "name": "fluxlabs",
+                    "email": "support@fluxlabs.ch",
+                    "homepage": "https://fluxlabs.ch",
                     "role": "Developer"
                 }
             ],
             "description": "Change namespace of libraries to plugin namespace",
-            "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+            "homepage": "https://github.com/fluxapps/LibrariesNamespaceChanger",
             "keywords": [
                 "changer",
                 "libraries",
                 "namespace"
             ],
-            "time": "2021-01-25T06:48:05+00:00"
+            "time": "2021-07-20T08:31:26+00:00"
         }
     ],
     "packages-dev": [],
