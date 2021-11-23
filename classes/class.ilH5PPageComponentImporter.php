@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-/* Copyright (c) 2021 Thibeau Fuhrer <thf@studer-raimann.ch> Extended GPL, see docs/LICENSE */
-
 /**
  * Class ilH5PPageComponentImporter
  *
@@ -17,7 +15,7 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
         // workaround for H5P content that was exported before
         // exports were prohibited. The loop beneath replaces all
         // properties and leads to an empty XML tag being added.
-        foreach (self::$pc_properties as $key => $value) {
+        foreach (self::$pc_properties as $key => $values) {
             self::$pc_properties[$key] = [];
         }
     }

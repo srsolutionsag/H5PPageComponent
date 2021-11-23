@@ -62,7 +62,7 @@ class ilH5PExportHelper
      * the given absolute directory. Then each of these export files is
      * searched for a 'Plugged' XML property of this plugin and removes it.
      */
-    public function removePluggedContents() : void
+    public function replacePluggedContents(string $replacement = null) : void
     {
         preg_match_all(self::MANIFEST_EXPORT_FILE_REGEX, $this->xml_manifest, $export_file_tags);
 
@@ -81,7 +81,11 @@ class ilH5PExportHelper
                 // remove the plugged xml property from the current
                 // file's content, in order to prohibit H5P exports.
                 $original_content  = @file_get_contents($absolute_file_path);
-                $processed_content = preg_replace(self::EXPORT_FILE_PLUGGED_H5P_CONTENT, '', $original_content);
+                $processed_content = preg_replace(
+                    self::EXPORT_FILE_PLUGGED_H5P_CONTENT,
+                    $replacement ?? '',
+                    $original_content
+                );
 
                 // only adopt the processed content if necessary.
                 if ($original_content !== $processed_content) {

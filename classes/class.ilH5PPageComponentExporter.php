@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-/* Copyright (c) 2021 Thibeau Fuhrer <thf@studer-raimann.ch> Extended GPL, see docs/LICENSE */
-
 /**
  * Class ilH5PPageComponentExporter
  *
@@ -25,7 +23,9 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
         (new ilH5PExportHelper(
             $this->exp->manifest_writer->xmlStr,
             $this->exp->export_run_dir
-        ))->removePluggedContents();
+        ))->replacePluggedContents(
+            '<Plugged PluginName="H5PPageComponent" PluginVersion=""/>'
+        );
     }
 
     /**
