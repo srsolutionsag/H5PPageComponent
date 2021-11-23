@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ilH5PExportHelper' => $baseDir . '/classes/class.ilH5PExportHelper.php',
+    'ilH5PPageComponentExporter' => $baseDir . '/classes/class.ilH5PPageComponentExporter.php',
+    'ilH5PPageComponentImporter' => $baseDir . '/classes/class.ilH5PPageComponentImporter.php',
     'ilH5PPageComponentPlugin' => $baseDir . '/classes/class.ilH5PPageComponentPlugin.php',
     'ilH5PPageComponentPluginGUI' => $baseDir . '/classes/class.ilH5PPageComponentPluginGUI.php',
     'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => $vendorDir . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
