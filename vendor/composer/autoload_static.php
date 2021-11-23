@@ -30,6 +30,9 @@ class ComposerStaticInit0397f6f254f15782af508774289e5343
     );
 
     public static $classMap = array (
+        'ilH5PExportHelper' => __DIR__ . '/../..' . '/classes/class.ilH5PExportHelper.php',
+        'ilH5PPageComponentExporter' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentExporter.php',
+        'ilH5PPageComponentImporter' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentImporter.php',
         'ilH5PPageComponentPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPlugin.php',
         'ilH5PPageComponentPluginGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPluginGUI.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
