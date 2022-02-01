@@ -96,16 +96,31 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
      */
     public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
     {
-        if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
-            if (self::dic()->ctrl()->getCmd() !== "cut") {
-                $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
-
+        if ($this->isIliasVersion7()) {
+            if (false !== $properties[ilPCPlugged::KEY_DELETE]) {
+                $h5p_content = self::h5p()->contents()->getContentById((int) $properties["content_id"]);
                 if ($h5p_content !== null) {
                     self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
                 }
             } else {
-                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . intval($properties["content_id"]), true);
+                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . (int) $properties["content_id"], true);
+            }
+        } else {
+            if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
+                if (self::dic()->ctrl()->getCmd() !== "cut") {
+                    $h5p_content = self::h5p()->contents()->getContentById((int) $properties["content_id"]);
+                    if ($h5p_content !== null) {
+                        self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
+                    }
+                } else {
+                    ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . (int) $properties["content_id"], true);
+                }
             }
         }
+    }
+
+    public function isIliasVersion7() : bool
+    {
+        return (bool) version_compare('7.0', ILIAS_VERSION_NUMERIC, '<=');
     }
 }
