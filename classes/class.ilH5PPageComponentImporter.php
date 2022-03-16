@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 
+use srag\Plugins\H5P\Content\ContentImporter;
+use srag\Plugins\H5P\Content\Content;
+
 /**
- * Class ilH5PPageComponentImporter
- *
  * @author Thibeau Fuhrer <thf@studer-raimann.ch>
+ * @noinspection AutoloadingIssuesInspection
  */
 class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
 {
@@ -12,11 +14,13 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
      */
     public function importXmlRepresentation($a_entity, $a_id, $a_xml, $a_mapping)/* : void*/
     {
-        // workaround for H5P content that was exported before
-        // exports were prohibited. The loop beneath replaces all
-        // properties and leads to an empty XML tag being added.
-        foreach (self::$pc_properties as $key => $values) {
-            self::$pc_properties[$key] = [];
+        $content_ids = (new ContentImporter(
+            $this->getImportDirectory(),
+            Content::PARENT_TYPE_PAGE
+        ))->import($a_xml, 0);
+
+        if (!empty($content_ids)) {
+            self::$pc_properties[$a_id]['content_id'] = $content_ids[0];
         }
     }
 }
