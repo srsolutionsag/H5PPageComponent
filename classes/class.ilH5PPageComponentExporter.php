@@ -1,30 +1,40 @@
 <?php declare(strict_types=1);
 
+use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\Content\ContentExporter;
+
 /**
- * Class ilH5PPageComponentExporter
- *
  * @author Thibeau Fuhrer <thf@studer-raimann.ch>
+ * @noinspection AutoloadingIssuesInspection
  */
 class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
 {
+    use H5PTrait;
+
     /**
-     * This method removes all plugged H5P contents and therefore
-     * prohibits H5P content to be exported.
-     *
-     * That is done, because exporting an H5P object that is plugged
-     * into a COPage object only means, that the page contains a
-     * reference to that object. If this page is imported, then the
-     * H5P content of an entirely different page will be shown and
-     * could even be edited - and because it's only referenced the
-     * changes affect BOTH places the content is plugged into.
+     * cannot initialize ContentExporter here because the
+     * directories are not yet determined.
      */
     public function init()/* : void*/
     {
-        (new ilH5PExportHelper(
-            $this->exp->manifest_writer->xmlStr,
-            $this->exp->export_run_dir
-        ))->replacePluggedContents(
-            '<Plugged PluginName="H5PPageComponent" PluginVersion=""/>'
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getXmlRepresentation($a_entity, $a_schema_version, $a_id) : string
+    {
+        // at this point, the working directory does not yet exist.
+        ilUtil::makeDir($this->getAbsoluteExportDirectory());
+
+        $content_id = (int) self::$pc_properties[$a_id]['content_id'];
+
+        return (new ContentExporter(
+            new ilXmlWriter(),
+            $this->getAbsoluteExportDirectory(),
+            $this->getRelativeExportDirectory()
+        ))->exportSingle(
+            self::h5p()->contents()->getContentById($content_id)
         );
     }
 
@@ -34,13 +44,5 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
     public function getValidSchemaVersions($a_entity) : array
     {
         return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getXmlRepresentation($a_entity, $a_schema_version, $a_id)/* : void*/
-    {
-
     }
 }
