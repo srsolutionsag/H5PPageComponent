@@ -2,10 +2,11 @@
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-$id                = "pchfp";
-$version           = "2.0.1";
-$ilias_min_version = "6.0";
-$ilias_max_version = "7.999";
-$responsible       = "studer + raimann ag - Team Core 1";
-$responsible_mail  = "support-core1@studer-raimann.ch";
-$supports_export   = true;
+$id                 = "pchfp";
+$version            = "2.1.0";
+$ilias_min_version  = "6.0";
+$ilias_max_version  = "7.999";
+$responsible        = "sr solutions ag";
+$responsible_mail   = "support@sr.solutions";
+$supports_export    = true;
+$supports_cli_setup = true;
