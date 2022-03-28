@@ -20,7 +20,8 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
         ))->import($a_xml, 0);
 
         if (!empty($content_ids)) {
-            self::$pc_properties[$a_id]['content_id'] = $content_ids[0];
+            $imported_page_cont_id = self::getPCMapping($a_id, $a_mapping);
+            self::$pc_properties[$imported_page_cont_id]['content_id'] = $content_ids[0];
         }
     }
 }
