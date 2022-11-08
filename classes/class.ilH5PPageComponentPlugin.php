@@ -97,16 +97,14 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
     {
         if ($this->isIliasVersion7()) {
-            // HOTFIX:
-            // the content deletion is temporarily deactivated until PR
-            // https://github.com/ILIAS-eLearning/ILIAS/pull/3990 gets
-            // merged. Until then, it's impossible to tell whether the
-            // content should be deleted or not. After merge check out
-            // the branch fix/PLH5HP-1/dnd-behaviour or uncomment the
-            // following if statement (instead of the current one).
-            // if (false !== $properties[ilPCPlugged::KEY_DELETE]) {
+            // we must rewind the body's file-stream because getContents() has already
+            // been called at this point.
+            self::dic()->http()->request()->getBody()->rewind();
+            $body = (!empty($_POST)) ?
+                self::dic()->http()->request()->getParsedBody() :
+                json_decode(self::dic()->http()->request()->getBody()->getContents(), true);
 
-            if (false) {
+            if (isset($body['action']) && 'delete' === $body['action']) {
                 $h5p_content = self::h5p()->contents()->getContentById((int) $properties["content_id"]);
                 if ($h5p_content !== null) {
                     self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);

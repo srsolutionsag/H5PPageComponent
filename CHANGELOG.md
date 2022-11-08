@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.2]
+- Content will actually be removed from the database again when deleted on a content page (COPage).
+- Added Captainhook config to streamline commit messages.
+
 ## [1.5.2]
 - Remove generate readme and auto_version_tag_ci
 
