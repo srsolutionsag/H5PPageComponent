@@ -96,7 +96,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
         $this->h5p_container = ilH5PPlugin::getInstance()->getContainer();
         $this->repositories = $this->h5p_container->getRepositoryFactory();
-        $this->translator = ilH5PPlugin::getInstance();
+        $this->translator = $this->h5p_container->getTranslator();
 
         $this->post_request = new ArrayBasedRequestWrapper(
             $DIC->http()->request()->getParsedBody()
@@ -262,13 +262,16 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
     /**
      * Adds a button to the toolbar to switch between the import and create form.
+     * The button will be the opposite of the given $import flag.
      */
     protected function addImportOrCreateButton(bool $import): void
     {
+        $import = !$import;
+
         $this->toolbar->addComponent(
             $this->components->button()->standard(
-                $this->translator->txt(($import) ? 'import_content' : 'create_content'),
-                $this->getLinkTarget(self::class, self::CMD_CONTENT_CREATE, [
+                $this->translator->txt((($import) ? 'import_content' : 'add_content')),
+                $this->getLinkTarget(self::class, ilPageComponentPlugin::CMD_INSERT, [
                     self::IMPORT_CONTENT_FALG => (int) $import
                 ])
             )

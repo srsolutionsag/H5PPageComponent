@@ -1,5 +1,10 @@
 # H5PPageComponent Changelog
 
+## 3.0.1
+
+- Adopted the `ITranslator` introduced with the latest version of H5P's main plugin.
+- Fixed an issue where H5P content could not be imported due to a wrong command being used.
+
 ## 3.0.0
 
 - Added compatibility with refactored main Plugin (https://github.com/srsolutionsag/H5P).

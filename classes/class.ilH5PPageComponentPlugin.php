@@ -7,14 +7,13 @@ use srag\Plugins\H5P\Content\IContentRepository;
 use srag\Plugins\H5P\Content\IContent;
 use srag\Plugins\H5P\ArrayBasedRequestWrapper;
 use srag\Plugins\H5P\RequestHelper;
-use srag\Plugins\H5P\ITranslator;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PPageComponentPlugin extends ilPageComponentPlugin implements ITranslator
+class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 {
     public const PLUGIN_NAME = "H5PPageComponent";
     public const PLUGIN_ID = "pchfp";
