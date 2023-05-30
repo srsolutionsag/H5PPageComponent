@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
-use srag\Plugins\H5P\Content\ContentImporter;
-use srag\Plugins\H5P\Content\Content;
+declare(strict_types=1);
+
+use srag\Plugins\H5P\Content\IContent;
 
 /**
- * @author Thibeau Fuhrer <thf@studer-raimann.ch>
+ * @author       Thibeau Fuhrer <thf@studer-raimann.ch>
  * @noinspection AutoloadingIssuesInspection
  */
 class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
@@ -12,11 +13,19 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
     /**
      * @inheritDoc
      */
-    public function importXmlRepresentation($a_entity, $a_id, $a_xml, $a_mapping) : void
+    public function importXmlRepresentation($a_entity, $a_id, $a_xml, $a_mapping): void
     {
-        $content_ids = (new ContentImporter(
+        $container = ilH5PPlugin::getInstance()->getContainer();
+
+        // has to be initialized here because getImportDirectory() will
+        // be initialized after the object is constructed.
+        $content_ids = (new ilH5PContentImporter(
+            $container->getKernelFramework(),
+            $container->getKernelValidator(),
+            $container->getKernelStorage(),
+            $container->getKernel(),
             $this->getImportDirectory(),
-            Content::PARENT_TYPE_PAGE
+            IContent::PARENT_TYPE_OBJECT
         ))->import($a_xml, 0);
 
         if (!empty($content_ids)) {

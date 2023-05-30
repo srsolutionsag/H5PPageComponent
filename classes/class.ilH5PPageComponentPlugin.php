@@ -1,133 +1,202 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
+declare(strict_types=1);
 
-use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\CI\Rector\DICTrait\Replacement\VersionComparator;
+use srag\Plugins\H5P\Content\IContentRepository;
+use srag\Plugins\H5P\Content\IContent;
+use srag\Plugins\H5P\ArrayBasedRequestWrapper;
+use srag\Plugins\H5P\RequestHelper;
+use srag\Plugins\H5P\ITranslator;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class ilH5PPageComponentPlugin
- *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author       Thibeau Fuhrer <thibeau@sr.solutions>
+ * @noinspection AutoloadingIssuesInspection
  */
-class ilH5PPageComponentPlugin extends ilPageComponentPlugin
+class ilH5PPageComponentPlugin extends ilPageComponentPlugin implements ITranslator
 {
+    public const PLUGIN_NAME = "H5PPageComponent";
+    public const PLUGIN_ID = "pchfp";
 
-    use DICTrait;
-    use H5PTrait;
+    public const PROPERTY_CONTENT_ID = 'content_id';
 
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-    const PLUGIN_ID = "pchfp";
-    const PLUGIN_NAME = "H5PPageComponent";
     /**
      * @var self|null
      */
-    protected static $instance = null;
-
+    protected static $instance;
 
     /**
-     * ilH5PPageComponentPlugin constructor
+     * @var IContentRepository
+     */
+    protected $content_repository;
+
+    /**
+     * @var H5PStorage
+     */
+    protected $h5p_kernel_storage;
+
+    /**
+     * @var VersionComparator
+     */
+    protected $version_comparator;
+
+    /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
+     * @var ilCtrl
+     */
+    protected $ctrl;
+
+    /**
+     * @throws LogicException if the main plugin is not installed.
      */
     public function __construct()
     {
+        global $DIC;
         parent::__construct();
+
+        if (!class_exists('ilH5PPlugin')) {
+            throw new LogicException("You cannot use this plugin without installing the main plugin first.");
+        }
+
+        if (!$this->isActive()) {
+            return;
+        }
+
+        $container = ilH5PPlugin::getInstance()->getContainer();
+
+        if ($container->areDependenciesAvailable()) {
+            $this->content_repository = $container->getRepositoryFactory()->content();
+            $this->h5p_kernel_storage = $container->getKernelStorage();
+        }
+
+        if ($DIC->offsetExists('http') && $DIC->offsetExists('ilCtrl')) {
+            $this->request = $DIC->http()->request();
+            $this->ctrl = $DIC->ctrl();
+        }
+
+        $this->version_comparator = new VersionComparator();
+
+        self::$instance = $this;
     }
 
-
-    /**
-     * @return self
-     */
-    public static function getInstance() : self
+    public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
         return self::$instance;
     }
 
-
     /**
      * @inheritDoc
      */
-    public function getPluginName() : string
+    public function getPluginName(): string
     {
         return self::PLUGIN_NAME;
     }
 
-
     /**
      * @inheritDoc
      */
-    public function isValidParentType(/*string*/ $a_type) : bool
+    public function isValidParentType($a_type): bool
     {
-        // Allow in all parent types
         return true;
     }
 
-
     /**
      * @inheritDoc
      */
-    public function onClone(/*array*/ &$properties, /*string*/ $plugin_version)/*: void*/
+    public function onClone(&$a_properties, $a_plugin_version): void
     {
-        $old_content_id = intval($properties["content_id"]);
+        $content_id = (int) $a_properties[self::PROPERTY_CONTENT_ID];
 
-        $h5p_content = self::h5p()->contents()->getContentById(intval($old_content_id));
+        $content = $this->content_repository->getContent($content_id);
 
-        $h5p_content_copy = self::h5p()->contents()->cloneContent($h5p_content);
+        if (null === $content) {
+            return;
+        }
 
-        self::h5p()->contents()->storeContent($h5p_content_copy);
+        $content_clone = $this->content_repository->cloneContent($content);
 
-        self::h5p()->contents()->editor()->storageCore()->copyPackage($h5p_content_copy->getContentId(), $h5p_content->getContentId());
+        $this->content_repository->storeContent($content_clone);
+        $this->h5p_kernel_storage->copyPackage(
+            $content_clone->getContentId(),
+            $content->getContentId()
+        );
 
-        $properties["content_id"] = $h5p_content_copy->getContentId();
+        $a_properties[self::PROPERTY_CONTENT_ID] = $content_clone->getContentId();
 
-        if (ilSession::get(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $old_content_id)) {
-            ilSession::clear(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . $old_content_id);
-
-            $this->onDelete(["content_id" => $old_content_id], $plugin_version);
+        if ($this->isContentIdCut($content_id)) {
+            $this->markContentIdAsPasted($content_id);
+            $this->onDelete([self::PROPERTY_CONTENT_ID => $content_id], $a_plugin_version);
         }
     }
 
-
     /**
      * @inheritDoc
      */
-    public function onDelete(/*array*/ $properties, /*string*/ $plugin_version)/*: void*/
+    public function onDelete($a_properties, $a_plugin_version): void
     {
-        if ($this->isIliasVersion7()) {
-            // we must rewind the body's file-stream because getContents() has already
-            // been called at this point.
-            self::dic()->http()->request()->getBody()->rewind();
-            $body = (!empty($_POST)) ?
-                self::dic()->http()->request()->getParsedBody() :
-                json_decode(self::dic()->http()->request()->getBody()->getContents(), true);
+        $content_id = (int) $a_properties[self::PROPERTY_CONTENT_ID];
 
-            if (isset($body['action']) && 'delete' === $body['action']) {
-                $h5p_content = self::h5p()->contents()->getContentById((int) $properties["content_id"]);
-                if ($h5p_content !== null) {
-                    self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
-                }
-            } else {
-                ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . (int) $properties["content_id"], true);
+        if ($this->shouldDeleteContent()) {
+            if (null !== $content = $this->content_repository->getContent($content_id)) {
+                $this->deleteContent($content);
             }
         } else {
-            if (self::dic()->ctrl()->getCmd() !== "moveAfter") {
-                if (self::dic()->ctrl()->getCmd() !== "cut") {
-                    $h5p_content = self::h5p()->contents()->getContentById((int) $properties["content_id"]);
-                    if ($h5p_content !== null) {
-                        self::h5p()->contents()->editor()->show()->deleteContent($h5p_content);
-                    }
-                } else {
-                    ilSession::set(ilH5PPlugin::PLUGIN_NAME . "_cut_old_content_id_" . (int) $properties["content_id"], true);
-                }
-            }
+            $this->markContentIdAsCut($content_id);
         }
     }
 
-    public function isIliasVersion7() : bool
+    /**
+     * Returns whether the content can be safely deleted from the
+     * database or not.
+     */
+    protected function shouldDeleteContent(): bool
     {
-        return (bool) version_compare('7.0', ILIAS_VERSION_NUMERIC, '<=');
+        // see discussion in https://github.com/ILIAS-eLearning/ILIAS/pull/3990.
+        if ($this->version_comparator->is7()) {
+            $this->request->getBody()->rewind();
+            $body = (!empty($_POST)) ?
+                $this->request->getParsedBody() :
+                json_decode($this->request->getBody()->getContents(), true);
+
+            return (isset($body['action']) && 'delete' === $body['action']);
+        }
+
+        if ($this->version_comparator->is6()) {
+            return ('cut' === $this->ctrl->getCmd());
+        }
+
+        return false;
+    }
+
+    protected function deleteContent(IContent $content): void
+    {
+        $this->h5p_kernel_storage->deletePackage([
+            'id' => $content->getContentId(),
+            'slug' => $content->getSlug()
+        ]);
+    }
+
+    protected function markContentIdAsPasted(int $content_id): void
+    {
+        ilSession::clear(self::PLUGIN_ID . '_cut_old_content_id_' . $content_id);
+    }
+
+    protected function markContentIdAsCut(int $content_id): void
+    {
+        ilSession::set(self::PLUGIN_ID . '_cut_old_content_id_' . $content_id, true);
+    }
+
+    protected function isContentIdCut(int $content_id): bool
+    {
+        return (true === ilSession::get(self::PLUGIN_ID . '_cut_old_content_id_' . $content_id));
     }
 }

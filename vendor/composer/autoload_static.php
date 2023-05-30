@@ -6,42 +6,17 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit0397f6f254f15782af508774289e5343
 {
-    public static $files = array (
-        '3c9837afe4b6a05d9de648e96500e6f1' => __DIR__ . '/../..' . '/../../../Repository/RepositoryObject/H5P/vendor/autoload.php',
-    );
-
-    public static $prefixLengthsPsr4 = array (
-        's' => 
-        array (
-            'srag\\Plugins\\H5PPageComponent\\' => 30,
-            'srag\\LibrariesNamespaceChanger\\' => 31,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'srag\\Plugins\\H5PPageComponent\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-        'srag\\LibrariesNamespaceChanger\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
-        ),
-    );
-
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'ilH5PPageComponentExporter' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentExporter.php',
         'ilH5PPageComponentImporter' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentImporter.php',
         'ilH5PPageComponentPlugin' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPlugin.php',
         'ilH5PPageComponentPluginGUI' => __DIR__ . '/../..' . '/classes/class.ilH5PPageComponentPluginGUI.php',
-        'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0397f6f254f15782af508774289e5343::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0397f6f254f15782af508774289e5343::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit0397f6f254f15782af508774289e5343::$classMap;
 
         }, null, ClassLoader::class);

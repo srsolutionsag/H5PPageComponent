@@ -1,51 +1,25 @@
 {
-  "name": "srag/h5ppagecomponent",
-  "description": "Add H5P contents in page component editor",
+  "name": "srag/h5p-page-component",
+  "description": "Add H5P contents in ILIAS content-pages.",
   "type": "project",
-  "keywords": [
-    "component",
-    "h5p",
-    "ilias",
-    "page",
-    "plugin"
-  ],
-  "homepage": "https://github.com/studer-raimann/H5PPageComponent",
   "license": "GPL-3.0-only",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Core 1",
-      "email": "support-core1@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
-      "role": "Developer"
+      "name": "sr solutions ag",
+      "email": "support@sr.solutions",
+      "homepage": "https://sr.solutions"
     }
   ],
-  "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P"
-  },
   "require": {
-    "php": ">=7.0",
-    "srag/librariesnamespacechanger": ">=0.1.0"
+    "php": ">=7.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
-    "psr-4": {
-      "srag\\Plugins\\H5PPageComponent\\": "src/"
-    },
+    "srag\\Plugins\\H5PPageComponent\\": "src/",
     "classmap": [
       "classes/"
-    ],
-    "files": [
-      "../../../Repository/RepositoryObject/H5P/vendor/autoload.php"
-    ]
-  },
-  "config": {
-    "classmap-authoritative": true,
-    "optimize-autoloader": true,
-    "sort-packages": true
-  },
-  "scripts": {
-    "pre-autoload-dump": [
-      "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces",
-      "srag\\LibrariesNamespaceChanger\\PHP72Backport::PHP72Backport"
     ]
   }
 }

@@ -1,252 +1,430 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
+declare(strict_types=1);
 
-use srag\DIC\H5P\DICTrait;
-use srag\Plugins\H5P\Content\Content;
-use srag\Plugins\H5P\Content\Editor\EditContentFormGUI;
-use srag\Plugins\H5P\Content\Editor\ImportContentFormGUI;
-use srag\Plugins\H5P\Utils\H5PTrait;
+use srag\Plugins\H5P\Content\Form\ImportContentFormProcessor;
+use srag\Plugins\H5P\Content\Form\ImportContentFormBuilder;
+use srag\Plugins\H5P\Content\Form\EditContentFormBuilder;
+use srag\Plugins\H5P\Content\Form\EditContentFormProcessor;
+use srag\Plugins\H5P\Content\ContentEditorHelper;
+use srag\Plugins\H5P\Content\ContentEditorData;
+use srag\Plugins\H5P\Content\IContent;
+use srag\Plugins\H5P\Content\Form\ContentPostProcessor;
+use srag\Plugins\H5P\Content\Form\IPostProcessorAware;
+use srag\Plugins\H5P\Form\IFormBuilder;
+use srag\Plugins\H5P\ArrayBasedRequestWrapper;
+use srag\Plugins\H5P\IRepositoryFactory;
+use srag\Plugins\H5P\IRequestParameters;
+use srag\Plugins\H5P\TemplateHelper;
+use srag\Plugins\H5P\RequestHelper;
+use srag\Plugins\H5P\ITranslator;
+use srag\Plugins\H5P\IContainer;
+use Psr\Http\Message\ServerRequestInterface;
+use ILIAS\UI\Component\Input\Container\Form\Form;
+use ILIAS\UI\Factory as ComponentFactory;
 
 /**
- * Class ilH5PPageComponentPluginGUI
+ * This GUI handles all requests that concern the CRUD operations of H5P content
+ * embedded in a COPage object.
  *
- * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * The architecture of COPages is very limited in what plugins can do because it
+ * uses ilCtrl's getHTML() method to render the GUI. This leads to very long and
+ * fragile ilCtrl paths which disallow us to use this GUI as we would like to.
  *
+ * Link targets to this GUI can only ever be built with the commands 'insert',
+ * 'create', 'edit', and 'update', otherwise requests will magically fail.
+ *
+ * @author            Thibeau Fuhrer <thibeau@sr.solutions>
  * @ilCtrl_isCalledBy ilH5PPageComponentPluginGUI: ilPCPluggedGUI
+ * @noinspection      AutoloadingIssuesInspection
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 {
+    use ilH5PTargetHelper;
+    use ContentEditorHelper;
+    use TemplateHelper;
+    use RequestHelper;
 
-    use DICTrait;
-    use H5PTrait;
+    public const CMD_CONTENT_CREATE = 'create';
+    public const CMD_CONTENT_UPDATE = 'update';
 
-    const CMD_CANCEL = "cancel";
-    const CMD_CREATE = "create";
-    const CMD_CREATE_PLUG = "create_plug";
-    const CMD_EDIT = "edit";
-    const CMD_EXPORT = "export";
-    const CMD_INSERT = "insert";
-    const CMD_UPDATE = "update";
-    const PARAM_IMPORT = "h5p_import";
-    const PLUGIN_CLASS_NAME = ilH5PPlugin::class;
-
+    protected const IMPORT_CONTENT_FALG = 'import_content';
+    protected const EXPORT_CONTENT_FLAG = 'export_content';
 
     /**
-     * ilH5PPageComponentPluginGUI constructor
+     * @var IContainer
+     */
+    protected $h5p_container;
+
+    /**
+     * @var IRepositoryFactory
+     */
+    protected $repositories;
+
+    /**
+     * @var ITranslator
+     */
+    protected $translator;
+
+    /**
+     * @var ComponentFactory
+     */
+    protected $components;
+
+    /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
+     * @var ilObjContentPage
+     */
+    protected $object;
+
+    /**
+     * @var ilToolbarGUI
+     */
+    protected $toolbar;
+
+    /**
+     * @throws LogicException if there was no parent object id in the request.
      */
     public function __construct()
     {
+        global $DIC;
         parent::__construct();
+
+        $this->h5p_container = ilH5PPlugin::getInstance()->getContainer();
+        $this->repositories = $this->h5p_container->getRepositoryFactory();
+        $this->translator = ilH5PPlugin::getInstance();
+
+        $this->post_request = new ArrayBasedRequestWrapper(
+            $DIC->http()->request()->getParsedBody()
+        );
+
+        $this->get_request = new ArrayBasedRequestWrapper(
+            $DIC->http()->request()->getQueryParams()
+        );
+
+        $this->components = $DIC->ui()->factory();
+        $this->template = $DIC->ui()->mainTemplate();
+        $this->renderer = $DIC->ui()->renderer();
+        $this->request = $DIC->http()->request();
+        $this->refinery = $DIC->refinery();
+        $this->toolbar = $DIC->toolbar();
+        $this->ctrl = $DIC->ctrl();
+
+        $this->object = $this->getRequestedObjectOrAbort();
+
+        $DIC->ctrl()->setParameterByClass(self::class, IRequestParameters::REF_ID, $this->object->getRefId());
+        $DIC->ctrl()->setParameterByClass(
+            ilH5PAjaxEndpointGUI::class,
+            IRequestParameters::REF_ID,
+            $this->object->getRefId()
+        );
     }
-
-
-    /**
-     *
-     */
-    public function cancel()/*:void*/
-    {
-        $this->returnToParent();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function create()/*:void*/
-    {
-        if ($this->shouldImport()) {
-            $form = $this->getImportContentForm();
-        } else {
-            $form = $this->getEditorForm();
-        }
-
-        if (!$form->storeForm()) {
-            self::output()->output($form);
-
-            return;
-        }
-
-        if ($this->shouldImport()) {
-            $h5p_content = self::h5p()->contents()->editor()->show()->importContent($form);
-        } else {
-            $h5p_content = self::h5p()->contents()->editor()->show()->createContent($form->getLibrary(), $form->getParams(), $form);
-        }
-
-        if (!$h5p_content) {
-            self::output()->output($form);
-
-            return;
-        }
-
-        $h5p_content->setParentType(Content::PARENT_TYPE_PAGE);
-        $h5p_content->setObjId(0); // No id linked to page component required. Parent type is enough.
-
-        self::h5p()->contents()->storeContent($h5p_content);
-
-        $properties = [
-            "content_id" => $h5p_content->getContentId()
-        ];
-        $this->createElement($properties);
-
-        $this->returnToParent();
-    }
-
 
     /**
      * @inheritDoc
      */
-    public function edit()/*:void*/
+    public function executeCommand(): void
     {
-        $form = $this->getEditorForm();
+        $command = $this->ctrl->getCmd();
 
-        self::output()->output($form);
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function executeCommand()/*:void*/
-    {
-        $next_class = self::dic()->ctrl()->getNextClass($this);
-
-        switch (strtolower($next_class)) {
-            default:
-                $cmd = self::dic()->ctrl()->getCmd();
-
-                switch ($cmd) {
-                    case self::CMD_CANCEL:
-                    case self::CMD_CREATE:
-                    case self::CMD_EDIT:
-                    case self::CMD_EXPORT:
-                    case self::CMD_INSERT:
-                    case self::CMD_UPDATE:
-                        $this->{$cmd}();
-                        break;
-
-                    default:
-                        break;
-                }
+        switch ($command) {
+            case ilPageComponentPlugin::CMD_INSERT:
+            case ilPageComponentPlugin::CMD_EDIT:
+            case self::CMD_CONTENT_CREATE:
+            case self::CMD_CONTENT_UPDATE:
+                $this->{$command}();
                 break;
+
+            default:
+                throw new LogicException("command '$command' not found.");
         }
     }
-
-
-    /**
-     *
-     */
-    public function export()/*:void*/
-    {
-        $properties = $this->getProperties();
-        $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
-
-        self::h5p()->contents()->editor()->show()->exportContent($h5p_content);
-    }
-
 
     /**
      * @inheritDoc
      */
-    public function getElementHTML(/*string*/ $a_mode, array $a_properties, /*string*/ $plugin_version) : string
+    public function getElementHTML($a_mode, array $a_properties, $plugin_version): string
     {
-        // Workaround fix learning module override global template
-        self::dic()->dic()->offsetUnset("tpl");
-        self::dic()->dic()->offsetSet("tpl", $GLOBALS["tpl"]);
+        $content_id = $a_properties[ilH5PPageComponentPlugin::PROPERTY_CONTENT_ID] ?? null;
+        $content = (null !== $content_id) ? $this->repositories->content()->getContent((int) $content_id) : null;
 
-        $h5p_content = self::h5p()->contents()->getContentById(intval($a_properties["content_id"]));
+        $component = (null === $content) ?
+            $this->components->messageBox()->failure($this->translator->txt('content_not_exists')) :
+            $this->h5p_container->getComponentFactory()->content($content)->withLoadingMessage(
+                $this->translator->txt('content_loading')
+            );
 
-        if ($h5p_content !== null) {
-            return self::h5p()->contents()->show()->getH5PContent($h5p_content, true, ('edit' === $a_mode));
-        } else {
-            return self::plugin()->translate("content_not_exists") . "<br>";
-        }
+        return $this->wrapHtml($this->renderer->render($component));
     }
 
-
     /**
+     * This is our entry-point for the creating OR importing a new H5P content.
+     *
+     * If $this->shouldImportContent() returns true, we render the import form,
+     * otherwise we render the create form. The toolbar will hold an additional
+     * button to switch between the two forms.
+     *
+     * Both form MUST submit to the 'create' command which must handle both scenarios
+     * as well, otherwise the request will dissappear.
+     *
      * @inheritDoc
      */
-    public function insert()/*:void*/
+    public function insert(): void
     {
-        if ($this->shouldImport()) {
-            $form = $this->getImportContentForm();
-        } else {
-            $form = $this->getEditorForm();
-        }
+        $import = $this->shouldImportContent();
 
-        self::output()->output($form);
+        $this->addImportOrCreateButton($import);
+
+        ($import) ?
+            $this->render($this->getImportContentForm()) :
+            $this->render($this->getEditContentForm(self::CMD_CONTENT_CREATE));
     }
 
+    /**
+     * Processes the import or create form, depending on the request.
+     * This is the counter-part of the insert() method.
+     *
+     * @inheritDoc
+     */
+    public function create(): void
+    {
+        $import = $this->shouldImportContent();
+
+        $processor = ($import) ?
+            $this->getImportContentFormProcessor() :
+            $this->getEditContentFormProcessor($this->getEditContentForm(self::CMD_CONTENT_CREATE));
+
+        $this->addImportOrCreateButton($import);
+
+        $this->runFormProcessor($processor);
+    }
 
     /**
+     * This is our entry-point for the edditing OR exporting an H5P content.
      *
+     * In both scenarios we render the edit form. If $this->shouldExportContent()
+     * returns true however, we will deliver the H5P content as a file as well.
+     *
+     * The form will submit to the 'update' command which processes it.
+     *
+     * @inheritDoc
      */
-    public function update()/*:void*/
+    public function edit(): void
     {
-        $form = $this->getEditorForm();
-
-        if (!$form->storeForm()) {
-            self::output()->output($form);
-
-            return;
+        if (null === ($content = $this->getContentFor($this->getProperties()))) {
+            $this->redirectObjectNotFound();
         }
 
-        $properties = $this->getProperties();
-        $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
+        if ($this->shouldExportContent()) {
+            $this->exportContent($content->getContentId());
+        }
 
-        self::h5p()->contents()->editor()->show()->updateContent($h5p_content, $form->getParams(), $form);
+        $this->addExportButton($content);
 
-        $this->updateElement($properties);
+        $this->render($this->getEditContentForm(self::CMD_CONTENT_UPDATE, $content));
+    }
 
+    /**
+     * Processes the edit form. This is the counter-part of the edit() method.
+     */
+    protected function update(): void
+    {
+        if (null === ($content = $this->getContentFor($this->getProperties()))) {
+            $this->redirectObjectNotFound();
+        }
+
+        $this->addExportButton($content);
+
+        $this->runFormProcessor(
+            $this->getEditContentFormProcessor(
+                $this->getEditContentForm(self::CMD_CONTENT_UPDATE, $content)
+            ),
+            $content
+        );
+    }
+
+    /**
+     * Exports and delivers the H5P content as a file.
+     */
+    protected function exportContent(int $content_id): void
+    {
+        $content_data = $this->h5p_container->getKernel()->loadContent($content_id);
+        $this->h5p_container->getKernel()->filterParameters($content_data);
+
+        $export_file = IContainer::H5P_STORAGE_DIR . "/exports/" . $content_data["slug"] . "-" . $content_data["id"] . ".h5p";
+
+        ilFileDelivery::deliverFileAttached($export_file, $content_data["slug"] . ".h5p");
+    }
+
+    /**
+     * Adds a button to the toolbar to switch between the import and create form.
+     */
+    protected function addImportOrCreateButton(bool $import): void
+    {
+        $this->toolbar->addComponent(
+            $this->components->button()->standard(
+                $this->translator->txt(($import) ? 'import_content' : 'create_content'),
+                $this->getLinkTarget(self::class, self::CMD_CONTENT_CREATE, [
+                    self::IMPORT_CONTENT_FALG => (int) $import
+                ])
+            )
+        );
+    }
+
+    protected function addExportButton(IContent $content): void
+    {
+        $this->toolbar->addComponent(
+            $this->components->button()->standard(
+                $this->translator->txt('export_content'),
+                $this->getLinkTarget(self::class, ilPageComponentPlugin::CMD_EDIT, [
+                    self::EXPORT_CONTENT_FLAG => 1,
+                ])
+            )
+        );
+    }
+
+    /**
+     * Executes the given form processor and registers an additional post-processor,
+     * which calles either $this->createElement() or $this->updateElement() depending
+     * on the given content.
+     */
+    protected function runFormProcessor(IPostProcessorAware $form_processor, IContent $content = null): void
+    {
+        $post_processor = new ContentPostProcessor(
+            ilH5PPageComponentPlugin::PLUGIN_ID,
+            function (array $content_data) use ($content): void {
+                $data[ilH5PPageComponentPlugin::PROPERTY_CONTENT_ID] = $content_data['id'] ?? null;
+
+                (null !== $content) ? $this->updateElement($data) : $this->createElement($data);
+            }
+        );
+
+        $form_processor = $form_processor->withPostProcessor($post_processor);
+
+        if ($form_processor->processForm()) {
+            $this->returnToParent();
+        }
+
+        $this->render($form_processor->getProcessedForm());
+    }
+
+    protected function getEditContentForm(string $command, IContent $content = null): Form
+    {
+        $builder = new EditContentFormBuilder(
+            $this->translator,
+            $this->components->input()->container()->form(),
+            $this->components->input()->field(),
+            $this->h5p_container->getComponentFactory(),
+            $this->refinery,
+            (null !== $content) ? $this->getContentEditorData(
+                $content->getContentId()
+            ) : null
+        );
+
+        return $builder->getForm(
+            $this->getFormAction(self::class, $command)
+        );
+    }
+
+    protected function getEditContentFormProcessor(Form $edit_form): IPostProcessorAware
+    {
+        return new EditContentFormProcessor(
+            $this->repositories->content(),
+            $this->repositories->library(),
+            $this->h5p_container->getKernel(),
+            $this->h5p_container->getEditor(),
+            $this->request,
+            $edit_form,
+            $this->object->getId(),
+            IContent::PARENT_TYPE_PAGE
+        );
+    }
+
+    protected function getImportContentForm(): Form
+    {
+        $builder = new ImportContentFormBuilder(
+            $this->translator,
+            $this->components->input()->container()->form(),
+            $this->components->input()->field(),
+            $this->refinery,
+            new ilH5PUploadHandlerGUI()
+        );
+
+        return $builder->getForm(
+            $this->getFormAction(self::class, self::CMD_CONTENT_CREATE, [
+                self::IMPORT_CONTENT_FALG => 1,
+            ])
+        );
+    }
+
+    protected function getImportContentFormProcessor(): IPostProcessorAware
+    {
+        return new ImportContentFormProcessor(
+            $this->h5p_container->getKernelValidator(),
+            $this->h5p_container->getKernelStorage(),
+            $this->h5p_container->getKernel(),
+            $this->request,
+            $this->getImportContentForm(),
+            $this->object->getId(),
+            IContent::PARENT_TYPE_PAGE
+        );
+    }
+
+    protected function getRequestedObjectOrAbort(): ilObjContentPage
+    {
+        $ref_id = $this->getRequestedInteger($this->get_request, IRequestParameters::REF_ID);
+        $object = ilObjectFactory::getInstanceByRefId($ref_id ?? -1, false);
+
+        if (!$object instanceof ilObjContentPage) {
+            $this->redirectObjectNotFound();
+        }
+
+        return $object;
+    }
+
+    protected function getContentFor(array $properties): ?IContent
+    {
+        $content_id = $properties[ilH5PPageComponentPlugin::PROPERTY_CONTENT_ID] ?? null;
+        if (null !== $content_id) {
+            return $this->repositories->content()->getContent((int) $content_id);
+        }
+
+        return null;
+    }
+
+    /**
+     * Wraps the given HTML in a div with a margin-top of 25px.
+     *
+     * This is used to add spacing between continous H5P contents and provides
+     * the page-editor with a clickable area to select the content.
+     */
+    protected function wrapHtml(string $html): string
+    {
+        return '<div style="margin-top: 25px;">' . $html . '</div>';
+    }
+
+    protected function redirectObjectNotFound(): void
+    {
+        ilUtil::sendFailure($this->translator->txt('object_not_found'), true);
         $this->returnToParent();
     }
 
-
-    /**
-     * @return EditContentFormGUI
-     */
-    protected function getEditorForm() : EditContentFormGUI
+    protected function shouldImportContent(): bool
     {
-        $properties = $this->getProperties();
-        $h5p_content = self::h5p()->contents()->getContentById(intval($properties["content_id"]));
-
-        if ($h5p_content !== null) {
-            self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
-                ->translate("export_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_EXPORT)));
-        } else {
-            self::dic()->ctrl()->setParameter($this, self::PARAM_IMPORT, true);
-            self::dic()->toolbar()->addComponent(self::dic()->ui()->factory()->button()->standard(self::plugin()
-                ->translate("import_content"), self::dic()->ctrl()->getLinkTarget($this, self::CMD_INSERT)));
-            self::dic()->ctrl()->setParameter($this, self::PARAM_IMPORT, null);
-        }
-
-        $form = self::h5p()->contents()->editor()->factory()->newEditContentFormInstance($this, $h5p_content, self::CMD_CREATE_PLUG, self::CMD_UPDATE, self::CMD_CANCEL);
-
-        //self::addCreationButton($form);
-
-        return $form;
+        return 0 < $this->getRequestedInteger($this->get_request, self::IMPORT_CONTENT_FALG);
     }
 
-
-    /**
-     * @return ImportContentFormGUI
-     */
-    protected function getImportContentForm() : ImportContentFormGUI
+    protected function shouldExportContent(): bool
     {
-        self::dic()->ctrl()->saveParameter($this, self::PARAM_IMPORT);
-
-        $form = self::h5p()->contents()->editor()->factory()->newImportContentFormInstance($this, self::CMD_CREATE, self::CMD_CANCEL);
-
-        return $form;
+        return 0 < $this->getRequestedInteger($this->get_request, self::EXPORT_CONTENT_FLAG);
     }
 
-
-    /**
-     * @return bool
-     */
-    protected function shouldImport() : bool
+    protected function getKernel(): \H5PCore
     {
-        return boolval(filter_input(INPUT_GET, self::PARAM_IMPORT));
+        return $this->h5p_container->getKernel();
     }
 }
