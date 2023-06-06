@@ -77,7 +77,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected $request;
 
     /**
-     * @var ilObjContentPage
+     * @var ilObject
      */
     protected $object;
 
@@ -377,12 +377,12 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         );
     }
 
-    protected function getRequestedObjectOrAbort(): ilObjContentPage
+    protected function getRequestedObjectOrAbort(): ilObject
     {
         $ref_id = $this->getRequestedInteger($this->get_request, IRequestParameters::REF_ID);
         $object = ilObjectFactory::getInstanceByRefId($ref_id ?? -1, false);
 
-        if (!$object instanceof ilObjContentPage) {
+        if (false === $object) {
             $this->redirectObjectNotFound();
         }
 
@@ -413,7 +413,14 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function redirectObjectNotFound(): void
     {
         ilUtil::sendFailure($this->translator->txt('object_not_found'), true);
-        $this->returnToParent();
+
+        // it's possible the PC GUI has not been set yet, in which case
+        // we have no choice than redirecting to the repository root.
+        if (null === $this->getPCGUI()) {
+            $this->ctrl->redirectToURL(ilLink::_getLink(1));
+        } else {
+            $this->returnToParent();
+        }
     }
 
     protected function shouldImportContent(): bool

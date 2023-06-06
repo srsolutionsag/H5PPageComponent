@@ -1,5 +1,10 @@
 # H5PPageComponent Changelog
 
+## 3.0.2
+
+- Fixed an null-pointer exception which ocurred sometimes if the requested object was not found.
+- Fixed an issue where H5P contents could only be used in 'copa' ILIAS objects.
+
 ## 3.0.1
 
 - Adopted the `ITranslator` introduced with the latest version of H5P's main plugin.
