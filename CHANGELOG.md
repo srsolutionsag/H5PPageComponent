@@ -1,5 +1,13 @@
 # H5PPageComponent Changelog
 
+## 3.1.0
+
+- Adopted new general setting from the main plugin (H5P) which allows/disallows the import of H5P contents.
+- Fixed an issue where the main plugin (H5P) needed to be active in order to use this plugin, because the custom
+  renderer was not exchanged.
+- Fixed an issue where the main plugin (H5P) needed to be active during the update process, which lead to plugin-updates
+  being broken via GUI.
+
 ## 3.0.2
 
 - Fixed an null-pointer exception which ocurred sometimes if the requested object was not found.

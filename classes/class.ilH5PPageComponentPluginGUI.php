@@ -22,6 +22,7 @@ use srag\Plugins\H5P\IContainer;
 use Psr\Http\Message\ServerRequestInterface;
 use ILIAS\UI\Component\Input\Container\Form\Form;
 use ILIAS\UI\Factory as ComponentFactory;
+use srag\Plugins\H5P\Settings\IGeneralSettings;
 
 /**
  * This GUI handles all requests that concern the CRUD operations of H5P content
@@ -136,6 +137,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
             case ilPageComponentPlugin::CMD_EDIT:
             case self::CMD_CONTENT_CREATE:
             case self::CMD_CONTENT_UPDATE:
+                $this->abortIfMainPluginNotInstalled();
                 $this->{$command}();
                 break;
 
@@ -149,6 +151,10 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
      */
     public function getElementHTML($a_mode, array $a_properties, $plugin_version): string
     {
+        if (!$this->repositories->general()->isMainPluginInstalled()) {
+            return '';
+        }
+
         $content_id = $a_properties[ilH5PPageComponentPlugin::PROPERTY_CONTENT_ID] ?? null;
         $content = (null !== $content_id) ? $this->repositories->content()->getContent((int) $content_id) : null;
 
@@ -175,9 +181,17 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
      */
     public function insert(): void
     {
+        $this->abortIfMainPluginNotInstalled();
+
         $import = $this->shouldImportContent();
 
-        $this->addImportOrCreateButton($import);
+        if ($import) {
+            // either add button to toggle forms or redirect to permission denied
+            // because user are not allowed to import content.
+            ($this->areImportsAllowed()) ?
+                $this->addImportOrCreateButton($import) :
+                $this->redirectPermissionDenied();
+        }
 
         ($import) ?
             $this->render($this->getImportContentForm()) :
@@ -192,7 +206,17 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
      */
     public function create(): void
     {
+        $this->abortIfMainPluginNotInstalled();
+
         $import = $this->shouldImportContent();
+
+        if ($import) {
+            // either add button to toggle forms or redirect to permission denied
+            // because user are not allowed to import content.
+            ($this->areImportsAllowed()) ?
+                $this->addImportOrCreateButton($import) :
+                $this->redirectPermissionDenied();
+        }
 
         $processor = ($import) ?
             $this->getImportContentFormProcessor() :
@@ -215,6 +239,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
      */
     public function edit(): void
     {
+        $this->abortIfMainPluginNotInstalled();
+
         if (null === ($content = $this->getContentFor($this->getProperties()))) {
             $this->redirectObjectNotFound();
         }
@@ -233,6 +259,8 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
      */
     protected function update(): void
     {
+        $this->abortIfMainPluginNotInstalled();
+
         if (null === ($content = $this->getContentFor($this->getProperties()))) {
             $this->redirectObjectNotFound();
         }
@@ -410,9 +438,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         return '<div style="margin-top: 25px;">' . $html . '</div>';
     }
 
-    protected function redirectObjectNotFound(): void
+    protected function redirectWithFailure(string $message): void
     {
-        ilUtil::sendFailure($this->translator->txt('object_not_found'), true);
+        ilUtil::sendFailure($message, true);
 
         // it's possible the PC GUI has not been set yet, in which case
         // we have no choice than redirecting to the repository root.
@@ -421,6 +449,34 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         } else {
             $this->returnToParent();
         }
+    }
+
+    protected function redirectObjectNotFound(): void
+    {
+        $this->redirectWithFailure($this->translator->txt('object_not_found'));
+    }
+
+    protected function redirectPermissionDenied(): void
+    {
+        $this->redirectWithFailure($this->translator->txt('permission_denied'));
+    }
+
+    protected function abortIfMainPluginNotInstalled(): void
+    {
+        if (!$this->repositories->general()->isMainPluginInstalled()) {
+            ilUtil::sendFailure('You must install the H5P plugin before you can create H5P contents.', true);
+            $this->returnToParent();
+        }
+    }
+
+    protected function areImportsAllowed(): bool
+    {
+        $option = $this->repositories->settings()->getGeneralSettingValue(IGeneralSettings::SETTING_ALLOW_H5P_IMPORTS);
+        if (null !== $option) {
+            return (bool) $option;
+        }
+
+        return false;
     }
 
     protected function shouldImportContent(): bool
