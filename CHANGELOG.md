@@ -1,5 +1,13 @@
 # H5PPageComponent Changelog
 
+## 3.1.1
+
+- Fixed an issue where H5P contents could not be found if the parent object was requested via "goto" link, because the "
+  ref_id" was missing in the URL.
+- Fixed an issue where the import button did not appear if the new setting from v3.1.0 has been set to "allow".
+- Fixed an issue where the renderer was exchanged if the main plugin (H5P) was not installed, which lead to a database
+  error.
+
 ## 3.1.0
 
 - Adopted new general setting from the main plugin (H5P) which allows/disallows the import of H5P contents.

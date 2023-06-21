@@ -18,8 +18,8 @@ use ILIAS\DI\Container;
  *
  * However, the plugin may be installed before the main plugin is installed, in
  * which case we need to disable the plugins functionality to prevent fatals.
- * This is why in this class and the GUI class we need to check if the main has
- * been installed.
+ * This is why in this class and the GUI class we need to check if the main plugin
+ * has been installed.
  *
  * @author       Thibeau Fuhrer <thibeau@sr.solutions>
  * @noinspection AutoloadingIssuesInspection
@@ -79,6 +79,10 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
             require_once self::H5P_MAIN_AUTOLOAD;
         }
 
+        if (!$this->isActive() || !$this->isMainPluginInstalled()) {
+            return;
+        }
+
         $container = ilH5PPlugin::getInstance()->getContainer();
 
         if ($container->areDependenciesAvailable()) {
@@ -122,15 +126,18 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     }
 
     /**
-     * Exchanges the default renderer if the main plugin is available but not active.
-     * Otherwise, this plugin cannot render any H5P contents and could even lead to fatals
-     * because we are using custom UI components, which arent renderable by default.
+     * Exchanges the default renderer instead of the main plugin, if it is available,
+     * installed but not active.
+     *
+     * This needs to be done because this plugins should still be usable even if the
+     * main plugin is inactive. Since renderers are only exchanged if a plugin is
+     * active, we need to exchange the renderer here to cover this scenario.
      *
      * @inheritDoc
      */
     public function exchangeUIRendererAfterInitialization(Container $dic): Closure
     {
-        if ($this->isMainPluginLoaded() && !$this->isMainPluginActive()) {
+        if ($this->isMainPluginLoaded() && $this->isMainPluginInstalled() && !$this->isMainPluginActive()) {
             return ilH5PPlugin::getInstance()->exchangeUIRendererAfterInitialization($dic);
         }
 

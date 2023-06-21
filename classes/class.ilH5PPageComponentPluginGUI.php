@@ -185,12 +185,10 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
         $import = $this->shouldImportContent();
 
-        if ($import) {
-            // either add button to toggle forms or redirect to permission denied
-            // because user are not allowed to import content.
-            ($this->areImportsAllowed()) ?
-                $this->addImportOrCreateButton($import) :
-                $this->redirectPermissionDenied();
+        if ($this->areImportsAllowed()) {
+            $this->addImportOrCreateButton($import);
+        } elseif ($import) {
+            $this->redirectPermissionDenied();
         }
 
         ($import) ?
@@ -210,19 +208,15 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
         $import = $this->shouldImportContent();
 
-        if ($import) {
-            // either add button to toggle forms or redirect to permission denied
-            // because user are not allowed to import content.
-            ($this->areImportsAllowed()) ?
-                $this->addImportOrCreateButton($import) :
-                $this->redirectPermissionDenied();
+        if ($this->areImportsAllowed()) {
+            $this->addImportOrCreateButton($import);
+        } elseif ($import) {
+            $this->redirectPermissionDenied();
         }
 
         $processor = ($import) ?
             $this->getImportContentFormProcessor() :
             $this->getEditContentFormProcessor($this->getEditContentForm(self::CMD_CONTENT_CREATE));
-
-        $this->addImportOrCreateButton($import);
 
         $this->runFormProcessor($processor);
     }
@@ -407,8 +401,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
     protected function getRequestedObjectOrAbort(): ilObject
     {
-        $ref_id = $this->getRequestedInteger($this->get_request, IRequestParameters::REF_ID);
-        $object = ilObjectFactory::getInstanceByRefId($ref_id ?? -1, false);
+        $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId($this->get_request) ?? -1, false);
 
         if (false === $object) {
             $this->redirectObjectNotFound();
