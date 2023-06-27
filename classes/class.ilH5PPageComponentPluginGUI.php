@@ -41,6 +41,7 @@ use srag\Plugins\H5P\Settings\IGeneralSettings;
  */
 class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 {
+    use ilH5POnScreenMessages;
     use ilH5PTargetHelper;
     use ContentEditorHelper;
     use TemplateHelper;
@@ -95,7 +96,12 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         global $DIC;
         parent::__construct();
 
-        $this->h5p_container = ilH5PPlugin::getInstance()->getContainer();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $this->h5p_container = $plugin->getContainer();
         $this->repositories = $this->h5p_container->getRepositoryFactory();
         $this->translator = $this->h5p_container->getTranslator();
 
@@ -149,7 +155,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     /**
      * @inheritDoc
      */
-    public function getElementHTML($a_mode, array $a_properties, $plugin_version): string
+    public function getElementHTML(string $a_mode, array $a_properties, string $plugin_version): string
     {
         if (!$this->repositories->general()->isMainPluginInstalled()) {
             return '';
@@ -433,7 +439,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
     protected function redirectWithFailure(string $message): void
     {
-        ilUtil::sendFailure($message, true);
+        $this->template->setOnScreenMessage(ilGlobalTemplateInterface::MESSAGE_TYPE_FAILURE, $message, true);
 
         // it's possible the PC GUI has not been set yet, in which case
         // we have no choice than redirecting to the repository root.
@@ -457,7 +463,12 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function abortIfMainPluginNotInstalled(): void
     {
         if (!$this->repositories->general()->isMainPluginInstalled()) {
-            ilUtil::sendFailure('You must install the H5P plugin before you can create H5P contents.', true);
+            $this->template->setOnScreenMessage(
+                ilGlobalTemplateInterface::MESSAGE_TYPE_FAILURE,
+                'You must install the H5P plugin before you can create H5P contents.',
+                true
+            );
+
             $this->returnToParent();
         }
     }
@@ -485,5 +496,10 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function getKernel(): \H5PCore
     {
         return $this->h5p_container->getKernel();
+    }
+
+    protected function getTemplate(): ilGlobalTemplateInterface
+    {
+        return $this->template;
     }
 }

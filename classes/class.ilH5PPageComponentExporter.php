@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use srag\Plugins\H5P\Content\IContentRepository;
+use ILIAS\Filesystem\Filesystem;
 
 /**
  * @author       Thibeau Fuhrer <thf@studer-raimann.ch>
@@ -16,6 +17,11 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
     protected $content_repository;
 
     /**
+     * @var Filesystem
+     */
+    protected $file_system;
+
+    /**
      * @var H5PCore
      */
     protected $h5p_kernel;
@@ -26,10 +32,16 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
      */
     public function init(): void
     {
-        $container = ilH5PPlugin::getInstance()->getContainer();
+        global $DIC;
 
-        $this->content_repository = $container->getRepositoryFactory()->content();
-        $this->h5p_kernel = $container->getKernel();
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
+
+        $this->file_system = $DIC->filesystem()->storage();
+        $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
+        $this->h5p_kernel = $plugin->getContainer()->getKernel();
     }
 
     /**
@@ -38,7 +50,7 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
     public function getXmlRepresentation($a_entity, $a_schema_version, $a_id): string
     {
         // at this point, the working directory does not yet exist.
-        ilUtil::makeDir($this->getAbsoluteExportDirectory());
+        $this->file_system->createDir($this->getAbsoluteExportDirectory());
 
         $content_id = (int) self::$pc_properties[$a_id]['content_id'];
 

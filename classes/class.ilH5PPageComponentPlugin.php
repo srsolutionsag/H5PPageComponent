@@ -34,24 +34,14 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     protected const H5P_MAIN_AUTOLOAD = __DIR__ . "/../../../../Repository/RepositoryObject/H5P/vendor/autoload.php";
 
     /**
-     * @var self|null
+     * @var ilH5PPlugin
      */
-    protected static $instance;
+    protected $h5p_plugin;
 
     /**
-     * @var IContentRepository
+     * @var ilH5PContainer
      */
-    protected $content_repository;
-
-    /**
-     * @var H5PStorage
-     */
-    protected $h5p_kernel_storage;
-
-    /**
-     * @var VersionComparator
-     */
-    protected $version_comparator;
+    protected $h5p_container;
 
     /**
      * @var ServerRequestInterface
@@ -66,55 +56,31 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @throws LogicException if the main plugin is not available (not found in file-system).
      */
-    public function __construct()
-    {
+    public function __construct(
+        \ilDBInterface $db,
+        \ilComponentRepositoryWrite $component_repository,
+        string $id
+    ) {
         global $DIC;
-        parent::__construct();
+        parent::__construct($db, $component_repository, $id);
 
         if (!file_exists(self::H5P_MAIN_AUTOLOAD)) {
             throw new LogicException("You cannot use this plugin without installing the main plugin first.");
         }
 
-        if (!$this->isMainPluginLoaded()) {
-            require_once self::H5P_MAIN_AUTOLOAD;
-        }
+        require_once self::H5P_MAIN_AUTOLOAD;
 
-        if (!$this->isActive() || !$this->isMainPluginInstalled()) {
-            return;
-        }
+        /** @var $component_factory ilComponentFactory */
+        $component_factory = $DIC['component.factory'];
+        /** @var $plugin ilH5PPlugin */
+        $this->h5p_plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
-        $container = ilH5PPlugin::getInstance()->getContainer();
-
-        if ($container->areDependenciesAvailable()) {
-            $this->content_repository = $container->getRepositoryFactory()->content();
-            $this->h5p_kernel_storage = $container->getKernelStorage();
-        }
+        $this->h5p_container = $this->h5p_plugin->getContainer();
 
         if ($DIC->offsetExists('http') && $DIC->offsetExists('ilCtrl')) {
             $this->request = $DIC->http()->request();
             $this->ctrl = $DIC->ctrl();
         }
-
-        $this->version_comparator = new VersionComparator();
-
-        self::$instance = $this;
-    }
-
-    public static function getInstance(): self
-    {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPluginName(): string
-    {
-        return self::PLUGIN_NAME;
     }
 
     /**
@@ -137,8 +103,8 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
      */
     public function exchangeUIRendererAfterInitialization(Container $dic): Closure
     {
-        if ($this->isMainPluginLoaded() && $this->isMainPluginInstalled() && !$this->isMainPluginActive()) {
-            return ilH5PPlugin::getInstance()->exchangeUIRendererAfterInitialization($dic);
+        if ($this->isMainPluginInstalled() && !$this->isMainPluginActive()) {
+            return $this->h5p_plugin->exchangeUIRendererAfterInitialization($dic);
         }
 
         return parent::exchangeUIRendererAfterInitialization($dic);
@@ -147,7 +113,7 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @inheritDoc
      */
-    public function onClone(&$a_properties, $a_plugin_version): void
+    public function onClone(array &$a_properties, string $a_plugin_version): void
     {
         if (!$this->isMainPluginInstalled()) {
             return;
@@ -155,16 +121,16 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
 
         $content_id = (int) $a_properties[self::PROPERTY_CONTENT_ID];
 
-        $content = $this->content_repository->getContent($content_id);
+        $content = $this->h5p_container->getRepositoryFactory()->content()->getContent($content_id);
 
         if (null === $content) {
             return;
         }
 
-        $content_clone = $this->content_repository->cloneContent($content);
+        $content_clone = $this->h5p_container->getRepositoryFactory()->content()->cloneContent($content);
 
-        $this->content_repository->storeContent($content_clone);
-        $this->h5p_kernel_storage->copyPackage(
+        $this->h5p_container->getRepositoryFactory()->content()->storeContent($content_clone);
+        $this->h5p_container->getKernelStorage()->copyPackage(
             $content_clone->getContentId(),
             $content->getContentId()
         );
@@ -180,16 +146,19 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
     /**
      * @inheritDoc
      */
-    public function onDelete($a_properties, $a_plugin_version): void
-    {
+    public function onDelete(
+        array $a_properties,
+        string $a_plugin_version,
+        bool $move_operation = false
+    ): void {
         if (!$this->isMainPluginInstalled()) {
             return;
         }
 
         $content_id = (int) $a_properties[self::PROPERTY_CONTENT_ID];
 
-        if ($this->shouldDeleteContent()) {
-            if (null !== $content = $this->content_repository->getContent($content_id)) {
+        if (!$move_operation) {
+            if (null !== $content = $this->h5p_container->getRepositoryFactory()->content()->getContent($content_id)) {
                 $this->deleteContent($content);
             }
         } else {
@@ -197,32 +166,9 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
         }
     }
 
-    /**
-     * Returns whether the content can be safely deleted from the
-     * database or not.
-     */
-    protected function shouldDeleteContent(): bool
-    {
-        // see discussion in https://github.com/ILIAS-eLearning/ILIAS/pull/3990.
-        if ($this->version_comparator->is7()) {
-            $this->request->getBody()->rewind();
-            $body = (!empty($_POST)) ?
-                $this->request->getParsedBody() :
-                json_decode($this->request->getBody()->getContents(), true);
-
-            return (isset($body['action']) && 'delete' === $body['action']);
-        }
-
-        if ($this->version_comparator->is6()) {
-            return ('cut' === $this->ctrl->getCmd());
-        }
-
-        return false;
-    }
-
     protected function deleteContent(IContent $content): void
     {
-        $this->h5p_kernel_storage->deletePackage([
+        $this->h5p_container->getKernelStorage()->deletePackage([
             'id' => $content->getContentId(),
             'slug' => $content->getSlug()
         ]);
@@ -243,18 +189,17 @@ class ilH5PPageComponentPlugin extends ilPageComponentPlugin
         return (true === ilSession::get(self::PLUGIN_ID . '_cut_old_content_id_' . $content_id));
     }
 
-    private function isMainPluginLoaded(): bool
-    {
-        return class_exists('ilH5PPlugin');
-    }
-
     private function isMainPluginInstalled(): bool
     {
-        return ilH5PPlugin::getInstance()->getContainer()->getRepositoryFactory()->general()->isMainPluginInstalled();
+        return $this
+            ->h5p_container
+            ->getRepositoryFactory()
+            ->general()
+            ->isMainPluginInstalled();
     }
 
     private function isMainPluginActive(): bool
     {
-        return ilH5PPlugin::getInstance()->isActive();
+        return $this->h5p_plugin->isActive();
     }
 }

@@ -1,5 +1,9 @@
 # H5PPageComponent Changelog
 
+## 4.0.0
+
+- Added ILIAS 8 compatibility.
+
 ## 3.1.1
 
 - Fixed an issue where H5P contents could not be found if the parent object was requested via "goto" link, because the "

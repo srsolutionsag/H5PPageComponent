@@ -8,8 +8,8 @@ This project is licensed under the GPL-3.0-only license
 
 ## Requirements
 
-* ILIAS 6.0 - 7.999
-* PHP >=7.0
+* ILIAS 8.0 - 8.999
+* PHP >=8.0
 
 ## Installation
 
@@ -43,7 +43,7 @@ Results of H5P contents are not available
 
 ## Adjustment suggestions
 
-You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLH5P
+You can report bugs or suggestions at https://plugins.sr.solutions/goto.php?target=uihk_srsu_PLH5P
 
 # ILIAS Plugin SLA
 We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or in our own work, we make publicly available to all interested parties free of charge at https://github.com/srsolutionsag.
