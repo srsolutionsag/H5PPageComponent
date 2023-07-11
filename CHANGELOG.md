@@ -1,5 +1,9 @@
 # H5PPageComponent Changelog
 
+## 4.0.1
+
+- Fixed an issue where content-page objects could not export or import H5P contents.
+
 ## 4.0.0
 
 - Added ILIAS 8 compatibility.

@@ -19,7 +19,12 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
     /**
      * @var Filesystem
      */
-    protected $file_system;
+    protected $web_filesystem;
+
+    /**
+     * @var Filesystem
+     */
+    protected $storage_filesystem;
 
     /**
      * @var H5PCore
@@ -39,7 +44,8 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
         /** @var $plugin ilH5PPlugin */
         $plugin = $component_factory->getPlugin(ilH5PPlugin::PLUGIN_ID);
 
-        $this->file_system = $DIC->filesystem()->storage();
+        $this->web_filesystem = $DIC->filesystem()->web();
+        $this->storage_filesystem = $DIC->filesystem()->storage();
         $this->content_repository = $plugin->getContainer()->getRepositoryFactory()->content();
         $this->h5p_kernel = $plugin->getContainer()->getKernel();
     }
@@ -49,9 +55,6 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
      */
     public function getXmlRepresentation($a_entity, $a_schema_version, $a_id): string
     {
-        // at this point, the working directory does not yet exist.
-        $this->file_system->createDir($this->getAbsoluteExportDirectory());
-
         $content_id = (int) self::$pc_properties[$a_id]['content_id'];
 
         if (null === ($content = $this->content_repository->getContent($content_id))) {
@@ -60,6 +63,8 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
 
         return (new ilH5PContentExporter(
             $this->content_repository,
+            $this->web_filesystem,
+            $this->storage_filesystem,
             new ilXmlWriter(),
             $this->h5p_kernel,
             $this->getAbsoluteExportDirectory(),
@@ -72,6 +77,13 @@ class ilH5PPageComponentExporter extends ilPageComponentPluginExporter
      */
     public function getValidSchemaVersions($a_entity): array
     {
-        return [];
+        return [
+            "5.0.0" => [
+                "namespace" => "srag\Plugins\H5PPageComponent",
+                "xsd_file" => "",
+                "min" => "8.0",
+                "max" => "8.999",
+            ],
+        ];
     }
 }
