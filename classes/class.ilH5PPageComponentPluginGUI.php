@@ -103,8 +103,11 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
             $DIC->http()->request()->getParsedBody()
         );
 
+        // we cannot use $DIC->http()->request()->getQueryParams() here,
+        // because in ILIAS LM objects the $_GET variable will be provided
+        // with the parent ref-id manually, at a latter point in time.
         $this->get_request = new ArrayBasedRequestWrapper(
-            $DIC->http()->request()->getQueryParams()
+            $_GET
         );
 
         $this->components = $DIC->ui()->factory();
@@ -401,6 +404,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 
     protected function getRequestedObjectOrAbort(): ilObject
     {
+        $ref_id = $this->getRequestedReferenceId($this->get_request);
         $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId($this->get_request) ?? -1, false);
 
         if (false === $object) {
