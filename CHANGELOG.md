@@ -1,5 +1,10 @@
 # H5PPageComponent Changelog
 
+## 3.1.2
+
+- Fixed an issue where H5P contents were not found inside of ILIAS learning-modules and redirected back to the
+  repository root instead.
+
 ## 3.1.1
 
 - Fixed an issue where H5P contents could not be found if the parent object was requested via "goto" link, because the "
