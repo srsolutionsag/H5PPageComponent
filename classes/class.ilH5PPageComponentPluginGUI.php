@@ -392,6 +392,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function getImportContentFormProcessor(): IPostProcessorAware
     {
         return new ImportContentFormProcessor(
+            $this->h5p_container->getFileUploadCommunicator(),
             $this->h5p_container->getKernelValidator(),
             $this->h5p_container->getKernelStorage(),
             $this->h5p_container->getKernel(),
