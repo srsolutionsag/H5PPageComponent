@@ -1,5 +1,9 @@
 # H5PPageComponent Changelog
 
+## 4.0.2
+
+- Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
+
 ## 4.0.1
 
 - Fixed an issue where content-page objects could not export or import H5P contents.
