@@ -25,7 +25,7 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
         // has to be initialized here because getImportDirectory() will
         // be initialized after the object is constructed.
         $content_ids = (new ilH5PContentImporter(
-            $container->getKernelFramework(),
+            $container->getFileUploadCommunicator(),
             $container->getKernelValidator(),
             $container->getKernelStorage(),
             $container->getKernel(),
