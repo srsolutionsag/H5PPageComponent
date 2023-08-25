@@ -43,6 +43,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
 {
     use ilH5POnScreenMessages;
     use ilH5PTargetHelper;
+    use ilH5PRequestObject;
     use ContentEditorHelper;
     use TemplateHelper;
     use RequestHelper;
@@ -79,6 +80,18 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected $request;
 
     /**
+     * Boolean flag which determines whether or not $this->object is located in the workspace.
+     * If true, the object-id (obj_id) must be used over the reference-id (ref_id).
+     *
+     * @var bool
+     */
+    protected $in_workspace;
+
+    /**
+     * ATTENTION: this property cannot be initialized in the constructur due to missing
+     * information about the parent object. $this->initParentObject() needs to be called
+     * before using this property.
+     *
      * @var ilObject
      */
     protected $object;
@@ -120,15 +133,6 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
         $this->refinery = $DIC->refinery();
         $this->toolbar = $DIC->toolbar();
         $this->ctrl = $DIC->ctrl();
-
-        $this->object = $this->getRequestedObjectOrAbort();
-
-        $DIC->ctrl()->setParameterByClass(self::class, IRequestParameters::REF_ID, $this->object->getRefId());
-        $DIC->ctrl()->setParameterByClass(
-            ilH5PAjaxEndpointGUI::class,
-            IRequestParameters::REF_ID,
-            $this->object->getRefId()
-        );
     }
 
     /**
@@ -144,6 +148,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
             case self::CMD_CONTENT_CREATE:
             case self::CMD_CONTENT_UPDATE:
                 $this->abortIfMainPluginNotInstalled();
+                $this->initParentObject();
                 $this->{$command}();
                 break;
 
@@ -188,6 +193,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     public function insert(): void
     {
         $this->abortIfMainPluginNotInstalled();
+        $this->initParentObject();
 
         $import = $this->shouldImportContent();
 
@@ -211,6 +217,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     public function create(): void
     {
         $this->abortIfMainPluginNotInstalled();
+        $this->initParentObject();
 
         $import = $this->shouldImportContent();
 
@@ -240,6 +247,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     public function edit(): void
     {
         $this->abortIfMainPluginNotInstalled();
+        $this->initParentObject();
 
         if (null === ($content = $this->getContentFor($this->getProperties()))) {
             $this->redirectObjectNotFound();
@@ -260,6 +268,7 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
     protected function update(): void
     {
         $this->abortIfMainPluginNotInstalled();
+        $this->initParentObject();
 
         if (null === ($content = $this->getContentFor($this->getProperties()))) {
             $this->redirectObjectNotFound();
@@ -370,8 +379,9 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
             $this->h5p_container->getEditor(),
             $this->request,
             $edit_form,
-            $this->object->getId(),
-            IContent::PARENT_TYPE_PAGE
+            ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+            $this->object->getType(),
+            $this->in_workspace
         );
     }
 
@@ -401,20 +411,61 @@ class ilH5PPageComponentPluginGUI extends ilPageComponentPluginGUI
             $this->h5p_container->getKernel(),
             $this->request,
             $this->getImportContentForm(),
-            $this->object->getId(),
-            IContent::PARENT_TYPE_PAGE
+            ($this->in_workspace) ? $this->object->getId() : $this->object->getRefId(),
+            $this->object->getType(),
+            $this->in_workspace
         );
     }
 
-    protected function getRequestedObjectOrAbort(): ilObject
+    /**
+     * This method exists because this controller may be called in other contexts than
+     * the repository (like portfolio or workspace), which do not allow to retrieve the
+     * parent object during construction, because the page will be provided at a later
+     * point.
+     */
+    protected function initParentObject(): void
     {
-        $object = ilObjectFactory::getInstanceByRefId($this->getRequestedReferenceId($this->get_request) ?? -1, false);
+        $repository_object = $this->getRequestedRepositoryObject($this->get_request);
+        $workspace_object = $this->getWorkspaceParentObject();
 
-        if (false === $object) {
+        if (null !== $repository_object) {
+            $query_parameter = IRequestParameters::REF_ID;
+            $ilias_id = $repository_object->getRefId();
+            $this->object = $repository_object;
+            $this->in_workspace = false;
+        } elseif (null !== $workspace_object) {
+            $query_parameter = IRequestParameters::OBJ_ID;
+            $ilias_id = $workspace_object->getId();
+            $this->object = $workspace_object;
+            $this->in_workspace = true;
+        } else {
             $this->redirectObjectNotFound();
+            return;
         }
 
-        return $object;
+        $this->ctrl->setParameterByClass(ilH5PAjaxEndpointGUI::class, $query_parameter, $ilias_id);
+    }
+
+    /**
+     * ATTENTION: please only use this method if the parent object cannot be determined
+     * via request.
+     */
+    protected function getWorkspaceParentObject(): ?ilObject
+    {
+        /** @var $parent_gui ilPCPluggedGUI */
+        $parent_gui = $this->getPCGUI();
+        /** @var $page ilPageObject */
+        $page = $parent_gui->getPage();
+
+        if ($page instanceof ilPortfolioPage) {
+            $obj_id = $page->getPortfolioId();
+        } else {
+            $obj_id = $page->getParentId();
+        }
+
+        $object = ilObjectFactory::getInstanceByObjId($obj_id, false);
+
+        return ($object) ?: null;
     }
 
     protected function getContentFor(array $properties): ?IContent
