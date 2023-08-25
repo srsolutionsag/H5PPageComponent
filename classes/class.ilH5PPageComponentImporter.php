@@ -25,12 +25,13 @@ class ilH5PPageComponentImporter extends ilPageComponentPluginImporter
             $container->getKernelStorage(),
             $container->getKernel(),
             $this->getImportDirectory(),
-            IContent::PARENT_TYPE_OBJECT
+            IContent::PARENT_TYPE_UNKNOWN,
+            false
         ))->import($a_xml, 0);
 
         if (!empty($content_ids)) {
             $imported_page_cont_id = self::getPCMapping($a_id, $a_mapping);
-            self::$pc_properties[$imported_page_cont_id]['content_id'] = $content_ids[0];
+            self::$pc_properties[$imported_page_cont_id][ilH5PPageComponentPlugin::PROPERTY_CONTENT_ID] = $content_ids[0];
         }
     }
 }
