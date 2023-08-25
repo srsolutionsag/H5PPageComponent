@@ -2,6 +2,10 @@
 
 ## 3.1.3
 
+-
+
+## 3.1.3
+
 - Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
 
 ## 3.1.2
