@@ -1,8 +1,8 @@
 # H5PPageComponent Changelog
 
-## 3.1.3
+## 3.1.4
 
--
+- Added compatibility with main plugin v4.1.10.
 
 ## 3.1.3
 
