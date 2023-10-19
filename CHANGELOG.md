@@ -1,5 +1,9 @@
 # H5PPageComponent Changelog
 
+## 4.0.3
+
+- Added compatibility with main plugin v5.0.8.
+
 ## 4.0.2
 
 - Fixed an issue where H5P library and content imports sometimes failed, due to invalid temporary paths being used.
